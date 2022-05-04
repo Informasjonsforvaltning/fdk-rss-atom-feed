@@ -1,0 +1,79 @@
+[tool.poetry]
+authors = ["Digdir <fellesdatakatalog@digdir.no>"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+]
+description = ""
+homepage = "https://github.com/Informasjonsforvaltning/fdk-rss-atom-feed"
+license = "Apache-2.0"
+name = "fdk-rss-atom-feed"
+readme = "README.md"
+repository = "https://github.com/Informasjonsforvaltning/fdk-rss-atom-feed"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+elasticsearch = "^8.2.0"
+feedgen = "^0.9.0"
+pytest-docker = "^0.12.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+codecov = "^2.1.12"
+coverage = "^6.3.2"
+flake8 = "^4.0.1"
+flake8-annotations = "^2.9.0"
+flake8-bandit = "^3.0.0"
+flake8-black = "^0.3.2"
+flake8-bugbear = "^22.4.25"
+flake8-docstrings = "^1.6.0"
+flake8-import-order = "^0.18.1"
+Flask = "^2.1.2"
+Flask-RESTful = "^0.3.9"
+mypy = "^0.950"
+nox = "^2022.1.7"
+nox-poetry = "^0.9.0"
+pep8-naming = "^0.12.1"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+requests = "^2.27.1"
+safety = "^1.10.3"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = false
+omit = []
+source = ["fdk_rss_atom_feed"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+
+[tool.mypy]
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+strict = false
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "pytest_mock.*",
+]
+
+[tool.pytest.ini_options]
+markers = [
+  "unit: marks tests as unit (fast)",
+  "integration: marks tests as integration (slower)",
+  "contract: marks test as contract (slow)",
+]
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]

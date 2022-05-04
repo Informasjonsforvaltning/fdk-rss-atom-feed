@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://staging.fellesdatakatalog.digdir.no/datasets?q=siri&amp;sortfield=harvest.firstHarvested</id>
+  <title>Felles datakatalog - Datasett</title>
+  <link href="https://staging.fellesdatakatalog.digdir.no/datasets?q=siri&amp;sortfield=harvest.firstHarvested"/>
+  <generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator>
+  <subtitle>En samling av datasett publisert i Felles datakataog</subtitle>
+  <entry>
+    <id>https://staging.fellesdatakatalog.digdir.no/datasets/bd93f99e-6844-3b37-b386-eab994595180</id>
+    <title>Sanntidsdata - Buss i Sør-Trøndelag</title>
+    <author>
+      <name>Karmsund og kysnesstrand revisjon</name>
+    </author>
+    <content>Sanntidsdata om bussene i Sør-Trøndelag. Data leveres i SIRI-formatet (SOAP-API). Følg lenken under til AtBs nettside for mer informasjon.</content>
+    <link href="https://staging.fellesdatakatalog.digdir.no/datasets/bd93f99e-6844-3b37-b386-eab994595180" rel="alternate"/>
+    <published>2050-01-01T00:00:00+00:00</published>
+  </entry>
+</feed>

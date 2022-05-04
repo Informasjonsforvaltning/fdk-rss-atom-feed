@@ -1,0 +1,7 @@
+[flake8]
+select = ANN,A50,B,B9,BLK,C,D,E,F,I,S,W,N
+ignore = ANN101,ANN401,E501,W503
+max-line-length = 120
+per-file-ignores =
+  tests/*: S101,
+import-order-style = google
