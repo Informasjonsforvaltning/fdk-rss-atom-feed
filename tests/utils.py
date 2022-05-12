@@ -19,6 +19,6 @@ def strip_dates(content: str) -> str:
 
 def strip_entries(content: str) -> str:
     """Strip all dataset entries in rss/atom feed."""
-    content = re.sub("\n +<entry>.*</entry>\n", "\n", content)
-    content = re.sub("\n +<item>.*</item>\n", "\n", content)
+    content = re.sub("\n +<entry>.*</entry>\n", "\n", content, flags=re.DOTALL)
+    content = re.sub("\n +<item>.*</item>\n", "\n", content, flags=re.DOTALL)
     return content
