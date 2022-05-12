@@ -59,7 +59,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
     elif feed_type == FeedType.ATOM:
         return feed_generator.atom_str(pretty=True)
     else:
-        raise Exception("Invalid feed type")
+        raise ValueError("Invalid feed type")
 
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
