@@ -4,10 +4,10 @@
 
 ### Requirements
 
- - [docker compose](https://docs.docker.com/compose/)
- - [poetry](https://python-poetry.org/)
- - [nox](https://nox.thea.codes/en/stable/)
- - [nox-poetry](https://pypi.org/project/nox-poetry/)
+- [docker compose](https://docs.docker.com/compose/)
+- [poetry](https://python-poetry.org/)
+- [nox](https://nox.thea.codes/en/stable/)
+- [nox-poetry](https://pypi.org/project/nox-poetry/)
 
 ### Installation
 
