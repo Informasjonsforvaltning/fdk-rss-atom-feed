@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 
 from fdk_rss_atom_feed import es_client
 from fdk_rss_atom_feed.query import construct_query
-from fdk_rss_atom_feed.translation import translate
+from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
 
 
@@ -44,12 +44,14 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
         feed_entry = feed_generator.add_entry()
 
         feed_entry.id(f"{BASE_URL}/{dataset['id']}")
-        feed_entry.title(translate(dataset["title"]))
-        feed_entry.description(translate(dataset["description"]))
+        feed_entry.title(translate_or_emptystr(dataset["title"]))
+        feed_entry.description(translate_or_emptystr(dataset["description"]))
         feed_entry.link(href=f"{BASE_URL}/{dataset['id']}")
         feed_entry.author(
-            name=translate(
-                dataset["publisher"]["prefLabel"] or dataset["publisher"]["name"]
+            name=translate_or_emptystr(
+                (dataset.get("publisher", {}) or {}).get("prefLabel", {})
+                or (dataset.get("publisher", {}) or {}).get("name", {})
+                or {}
             )
         )
         feed_entry.published(dataset["harvest"]["firstHarvested"])

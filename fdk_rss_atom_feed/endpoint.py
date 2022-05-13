@@ -1,4 +1,5 @@
 import logging
+import traceback
 from typing import Any
 
 from fdk_rss_atom_feed.feed import FeedType, generate_feed
@@ -29,8 +30,10 @@ def feed(request: Request) -> Any:
 
     try:
         feed = generate_feed(feed_type, dict(request.args.items()))
-    except Exception as e:
-        logging.error(e)
+    except Exception:
+        logging.error(
+            f"{traceback.format_exc()}Error handling params: {str(list(request.args.items()))}"
+        )
         return abort(http_status_code=500, description="Internal server error")
 
     return Response(feed, mimetype=mimetype)
