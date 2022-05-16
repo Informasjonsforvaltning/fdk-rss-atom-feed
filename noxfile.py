@@ -4,7 +4,7 @@ import sys
 import nox
 from nox_poetry import Session, session
 
-locations = ["fdk_rss_atom_feed", "tests", "main.py", "noxfile.py"]
+locations = ["fdk_rss_atom_feed", "tests", "noxfile.py"]
 nox.options.envdir = ".cache"
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = (
