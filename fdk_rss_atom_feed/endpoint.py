@@ -2,6 +2,7 @@ import logging
 import traceback
 from typing import Any
 
+from fdk_rss_atom_feed import es_client
 from fdk_rss_atom_feed.feed import FeedType, generate_feed
 from flask import Request, Response
 from flask_restful import abort
@@ -37,3 +38,19 @@ def feed(request: Request) -> Any:
         return abort(http_status_code=500, description="Internal server error")
 
     return Response(feed, mimetype=mimetype)
+
+
+def test_connection(_: Request) -> Any:
+    """Test elasticsearch connection"""
+    try:
+        result = es_client.search({"size": 0})
+        if not result["_shards"]["total"] == result["_shards"]["successful"]:
+            logging.warning(f"Elasticsearch query not successful: {str(result)}")
+    except IndexError:
+        logging.error(f"{traceback.format_exc()}Error checking elasticsearch result")
+        return abort(http_status_code=500, description="Internal server error")
+    except Exception:
+        logging.error(f"{traceback.format_exc()}Error connecting to elasticsearch")
+        return abort(http_status_code=500, description="Internal server error")
+
+    return Response("ok")
