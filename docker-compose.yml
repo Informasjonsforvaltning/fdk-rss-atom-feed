@@ -1,0 +1,35 @@
+version: "3"
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    ports:
+      - 9200:9200
+    environment:
+      - cluster.name=elasticsearch-docker
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  elasticsearch-dump:
+    image: elasticdump/elasticsearch-dump
+    volumes:
+      - ./tests/data:/data
+    command: elasticdump --input /data/datasets.json --output http://elasticsearch:9200/datasets
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  fdk-rss-atom-feed:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - ELASTIC_HOST=http://elasticsearch
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
