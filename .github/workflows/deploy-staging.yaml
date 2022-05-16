@@ -20,8 +20,7 @@ jobs:
       python_architecture: x64
       environment: staging
       cluster: digdir-fdk-dev
-      set_es_map_count: True
-      nox_image: True
+      nox_image: False
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GCP_SA_DIGDIR_FDK_GCR_KEY: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
