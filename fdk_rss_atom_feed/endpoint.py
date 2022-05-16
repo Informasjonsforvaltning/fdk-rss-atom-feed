@@ -4,8 +4,7 @@ from typing import Any
 
 from fdk_rss_atom_feed import es_client
 from fdk_rss_atom_feed.feed import FeedType, generate_feed
-from flask import Request, Response
-from flask_restful import abort
+from flask import abort, Request, Response
 
 
 FEED_TYPES = {
@@ -16,18 +15,17 @@ FEED_TYPES = {
 
 def feed(request: Request) -> Any:
     """Feed entrypoint"""
-    mimetypes = ", ".join(FEED_TYPES.keys())
-    supported_types = f"supported mime types: {{{mimetypes}}}\n"
-
-    # If no mimetype is specified
-    if request.accept_mimetypes.best == "*/*":
-        return Response(supported_types)
 
     mimetype = request.accept_mimetypes.best
     try:
         feed_type = FEED_TYPES[mimetype]
     except KeyError:
-        return abort(http_status_code=415, description=supported_types)
+        mimetypes = ", ".join(FEED_TYPES.keys())
+        supported_types = (
+            "The server does not support the media type transmitted in the request."
+            + f" Supported media types are: {{{mimetypes}}}."
+        )
+        return abort(415, supported_types)
 
     try:
         feed = generate_feed(feed_type, dict(request.args.items()))
@@ -35,7 +33,7 @@ def feed(request: Request) -> Any:
         logging.error(
             f"{traceback.format_exc()}Error handling params: {str(list(request.args.items()))}"
         )
-        return abort(http_status_code=500, description="Internal server error")
+        return abort(500)
 
     return Response(feed, mimetype=mimetype)
 
@@ -48,9 +46,9 @@ def test_connection(_: Request) -> Any:
             logging.warning(f"Elasticsearch query not successful: {str(result)}")
     except IndexError:
         logging.error(f"{traceback.format_exc()}Error checking elasticsearch result")
-        return abort(http_status_code=500, description="Internal server error")
+        return abort(500)
     except Exception:
         logging.error(f"{traceback.format_exc()}Error connecting to elasticsearch")
-        return abort(http_status_code=500, description="Internal server error")
+        return abort(500)
 
     return Response("ok")

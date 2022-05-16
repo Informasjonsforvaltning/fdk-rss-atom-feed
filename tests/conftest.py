@@ -30,7 +30,7 @@ def feed_service(docker_ip: str, docker_services: Any) -> str:
     port = docker_services.port_for("fdk-rss-atom-feed", 8080)
     url = f"http://{docker_ip}:{port}"
     docker_services.wait_until_responsive(
-        timeout=30, pause=0.1, check=lambda: is_ok(url)
+        timeout=30, pause=0.1, check=lambda: is_ok(url, 415)
     )
     return url
 
@@ -59,10 +59,10 @@ def elasticsearch_index(elasticsearch_service: str) -> dict:
     return {}
 
 
-def is_ok(url: str) -> bool:
-    """Check if service returns 200 status."""
+def is_ok(url: str, code: int = 200) -> bool:
+    """Check if service returns correct status."""
     try:
         response = requests.get(url)
-        return response.status_code == 200
+        return response.status_code == code
     except ConnectionError:
         return False
