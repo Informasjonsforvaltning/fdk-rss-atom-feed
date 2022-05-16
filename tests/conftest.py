@@ -27,7 +27,7 @@ def elasticsearch_service(docker_ip: str, docker_services: Any) -> str:
 @pytest.fixture(scope="session")
 def feed_service(docker_ip: str, docker_services: Any) -> str:
     """Ensure that feed service is up and responsive."""
-    port = docker_services.port_for("fdk-rss-atom-feed", 8000)
+    port = docker_services.port_for("fdk-rss-atom-feed", 8080)
     url = f"http://{docker_ip}:{port}"
     docker_services.wait_until_responsive(
         timeout=30, pause=0.1, check=lambda: is_ok(url)

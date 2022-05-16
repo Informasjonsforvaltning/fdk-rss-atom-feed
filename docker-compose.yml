@@ -27,7 +27,7 @@ services:
   fdk-rss-atom-feed:
     build: .
     ports:
-      - 8000:8000
+      - 8080:8080
     environment:
       - ELASTIC_HOST=http://elasticsearch
     depends_on:

@@ -17,4 +17,4 @@ COPY fdk_rss_atom_feed fdk_rss_atom_feed
 COPY app.py .
 
 EXPOSE 8080
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=8000"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=8080"]
