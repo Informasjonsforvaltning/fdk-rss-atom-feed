@@ -21,7 +21,7 @@ nox.options.sessions = (
 def unit_tests(session: Session) -> None:
     """Run the unit test suite."""
     args = session.posargs
-    session.install(".", "pytest")
+    session.install(".", "pytest", "requests")
     session.run(
         "pytest",
         "-m",
@@ -35,7 +35,7 @@ def unit_tests(session: Session) -> None:
 def integration_tests(session: Session) -> None:
     """Run the integration test suite."""
     args = session.posargs
-    session.install(".", "pytest", "pytest-docker")
+    session.install(".", "pytest", "pytest-docker", "requests")
     session.run(
         "pytest",
         "-m",
@@ -49,7 +49,7 @@ def integration_tests(session: Session) -> None:
 def contract_tests(session: Session) -> None:
     """Run the contract test suite."""
     args = session.posargs
-    session.install(".", "pytest")
+    session.install(".", "pytest", "pytest-docker", "requests")
     session.run(
         "pytest",
         "-m",
