@@ -142,7 +142,7 @@ def test_full_query() -> None:
                 },
                 {"term": {"spatial.prefLabel.no.keyword": "Oslo"}},
                 {"term": {"accessRights.code.keyword": "PUBLIC"}},
-                {"term": {"distribution.openLicense": "true"}},
+                {"term": {"isOpenData": "true"}},
                 {"range": {"harvest.firstHarvested": {"gte": "now-1d/d"}}},
             ],
         }
