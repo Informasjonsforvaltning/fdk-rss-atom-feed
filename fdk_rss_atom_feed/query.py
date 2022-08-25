@@ -33,7 +33,7 @@ FULLTEXT_FIELDS = (
 )
 OPENDATA_FILTERS = {
     "accessRights.code.keyword": "PUBLIC",
-    "distribution.openLicense": "true",
+    "isOpenData": "true",
 }
 ORGANIZATION_AND_KEYWORDS = (
     "publisher.prefLabel.*",
