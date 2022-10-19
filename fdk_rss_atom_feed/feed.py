@@ -37,7 +37,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
     feed_generator.id(url)
     feed_generator.link(href=url)
     feed_generator.title("Felles datakatalog - Datasett")
-    feed_generator.description("En samling av datasett publisert i Felles datakataog")
+    feed_generator.description("En samling av datasett publisert i Felles datakatalog")
 
     datasets = query_datasets(params.get("q", "").strip(), params)
     for dataset in datasets:

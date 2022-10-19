@@ -4,7 +4,7 @@
   <title>Felles datakatalog - Datasett</title>
   <link href="https://staging.fellesdatakatalog.digdir.no/datasets?q=siri&amp;sortfield=harvest.firstHarvested"/>
   <generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator>
-  <subtitle>En samling av datasett publisert i Felles datakataog</subtitle>
+  <subtitle>En samling av datasett publisert i Felles datakatalog</subtitle>
   <entry>
     <id>https://staging.fellesdatakatalog.digdir.no/datasets/bd93f99e-6844-3b37-b386-eab994595180</id>
     <title>Sanntidsdata - Buss i Sør-Trøndelag</title>
