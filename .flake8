@@ -3,5 +3,5 @@ select = ANN,A50,B,B9,BLK,C,D,E,F,I,S,W,N
 ignore = ANN101,ANN401,E501,E902,W503
 max-line-length = 120
 per-file-ignores =
-  tests/*: S101,
+  tests/*: S101, S113
 import-order-style = google
