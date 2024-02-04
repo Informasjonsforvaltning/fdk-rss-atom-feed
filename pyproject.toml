@@ -38,7 +38,7 @@ pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 requests = "^2.31.0"
 safety = "^2.3.5"
-pytest-docker = "^2.0.1"
+pytest-docker = "^3.1.1"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
