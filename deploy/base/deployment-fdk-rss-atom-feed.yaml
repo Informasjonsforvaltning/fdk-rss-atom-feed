@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fdk-rss-atom-feed
+  labels:
+    app: fdk-rss-atom-feed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fdk-rss-atom-feed
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: fdk-rss-atom-feed
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+        - name: fdk-rss-atom-feed
+          image: fdk-rss-atom-feed
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+            periodSeconds: 180
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            periodSeconds: 180
+            successThreshold: 1
+            failureThreshold: 5
+          resources:
+            requests:
+              memory: 50Mi
