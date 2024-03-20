@@ -5,9 +5,12 @@ services:
     ports:
       - 9200:9200
     environment:
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
       - cluster.name=elasticsearch-docker
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTIC_PASSWORD=elasticpwd
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 5s
@@ -29,6 +32,9 @@ services:
       - 8080:8080
     environment:
       - ELASTIC_HOST=http://elasticsearch
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=elasticpwd
+      - ELASTIC_HOST=elasticsearch:9200
     depends_on:
       elasticsearch:
         condition: service_healthy
