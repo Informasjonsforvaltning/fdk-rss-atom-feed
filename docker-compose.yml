@@ -1,8 +1,7 @@
 version: "3"
 services:
-
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
     ports:
       - 9200:9200
     environment:
@@ -10,7 +9,7 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 5s
       timeout: 5s
       retries: 10
