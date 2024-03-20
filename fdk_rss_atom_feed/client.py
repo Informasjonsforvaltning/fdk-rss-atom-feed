@@ -9,7 +9,7 @@ from elasticsearch import Elasticsearch
 class Client:
     def __init__(self) -> None:
         elastic_host = os.getenv("ELASTIC_HOST", "http://localhost:9200")
-        elastic_user = os.getenv("ELASTIC_USER", "")
+        elastic_user = os.getenv("ELASTIC_USERNAME", "")
         elastic_pwd = os.getenv("ELASTIC_PASSWORD", "")
         elastic_ca_cert = os.getenv("ELASTIC_CA_CERT", None)
 
