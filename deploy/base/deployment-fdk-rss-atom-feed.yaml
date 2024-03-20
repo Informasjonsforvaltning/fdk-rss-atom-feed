@@ -19,6 +19,10 @@ spec:
       annotations:
         prometheus.io/scrape: "false"
     spec:
+      volumes:
+        - name: elastic-certs
+          secret:
+            secretName: elasticsearch-es-http-certs-public
       containers:
         - name: fdk-rss-atom-feed
           image: fdk-rss-atom-feed
@@ -42,3 +46,6 @@ spec:
           resources:
             requests:
               memory: 50Mi
+          volumeMounts:
+            - name: elastic-certs
+              mountPath: /var/elastic-certs/ca.crt
