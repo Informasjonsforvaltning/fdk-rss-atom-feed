@@ -2,12 +2,13 @@ import re
 from typing import Any
 
 import requests
+from conftest import elastic_credentials
 
 
 def get_feed(url: str, mimetype: str) -> Any:
     """Request feed in specific format."""
     headers = {"Accept": f"application/{mimetype}+xml"}
-    return requests.get(url, headers=headers)
+    return requests.get(url, headers=headers, auth=elastic_credentials)
 
 
 def strip_dates(content: str) -> str:

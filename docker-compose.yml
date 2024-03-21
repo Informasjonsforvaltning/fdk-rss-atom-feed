@@ -12,7 +12,15 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - ELASTIC_PASSWORD=elasticpwd
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-u",
+          "elastic:elasticpwd",
+          "-f",
+          "http://localhost:9200",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
