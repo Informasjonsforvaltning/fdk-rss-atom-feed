@@ -34,7 +34,7 @@ curl -H "Accept: application/rss+xml" localhost:8000
 Kibana's dev tools console may be helpful when developing:
 
 ```bash
-docker run --rm -it --network host -e ELASTICSEARCH_HOSTS='["http://localhost:9200"]' kibana:7.16.3
+docker run --rm -it --network host -e ELASTICSEARCH_HOSTS='["http://localhost:9200"]' kibana:8.10.4
 ```
 
 Then create queries such as the one below in <http://localhost:5601/app/dev_tools#/console>.

@@ -7,6 +7,9 @@ import requests
 from requests.exceptions import ConnectionError
 
 
+elastic_credentials = ("elastic", "elasticpwd")
+
+
 @pytest.fixture(scope="session")
 def docker_compose_file(pytestconfig: Any) -> str:
     """Override default location of docker-compose.yml file."""
@@ -32,6 +35,7 @@ def feed_service(docker_ip: str, docker_services: Any) -> str:
     docker_services.wait_until_responsive(
         timeout=30, pause=0.1, check=lambda: is_ok(url, 415)
     )
+    print("Connected to docker service elasticsearch")
     return url
 
 
@@ -43,6 +47,7 @@ def elasticsearch_data(elasticsearch_service: str) -> None:
             f"{elasticsearch_service}/datasets/_search",
             headers={"Content-Type": "application/json"},
             data='{"size": 0}',
+            auth=elastic_credentials,
         )
         if '"hits":{"total":{"value":100' in response.content.decode("utf-8"):
             return
@@ -62,7 +67,7 @@ def elasticsearch_index(elasticsearch_service: str) -> dict:
 def is_ok(url: str, code: int = 200) -> bool:
     """Check if service returns correct status."""
     try:
-        response = requests.get(url)
+        response = requests.get(url, auth=elastic_credentials)
         return response.status_code == code
     except ConnectionError:
         return False

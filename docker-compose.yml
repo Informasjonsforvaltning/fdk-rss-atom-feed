@@ -1,16 +1,26 @@
 version: "3"
 services:
-
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
     ports:
       - 9200:9200
     environment:
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
       - cluster.name=elasticsearch-docker
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTIC_PASSWORD=elasticpwd
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-u",
+          "elastic:elasticpwd",
+          "-f",
+          "http://localhost:9200",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -29,7 +39,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      - ELASTIC_HOST=http://elasticsearch
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=elasticpwd
+      - ELASTIC_HOST=http://localhost:9200
     depends_on:
       elasticsearch:
         condition: service_healthy
