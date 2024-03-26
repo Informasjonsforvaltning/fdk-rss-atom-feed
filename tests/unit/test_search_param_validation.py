@@ -1,6 +1,5 @@
-import pytest
-
 from fdk_rss_atom_feed.feed import check_search_params
+import pytest
 
 
 @pytest.mark.unit

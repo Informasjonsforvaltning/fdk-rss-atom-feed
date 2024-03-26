@@ -1,13 +1,13 @@
 import json
 from typing import List
-import pytest
 
 from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
+import pytest
 
 
 @pytest.mark.unit
 def test_json_serialization() -> None:
-    searchOp = SearchOperation(
+    search_operation = SearchOperation(
         query="test query",
         filters=Filters(
             openData=SearchFilter[bool](value=True),
@@ -47,4 +47,4 @@ def test_json_serialization() -> None:
         }
     """.strip()
 
-    assert json.loads(searchOp.model_dump_json()) == json.loads(expected)
+    assert json.loads(search_operation.model_dump_json()) == json.loads(expected)

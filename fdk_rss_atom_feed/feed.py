@@ -3,12 +3,11 @@ import os
 from typing import Any, Dict, List
 from urllib.parse import urlencode
 
-import requests
-
 from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
+import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
@@ -73,13 +72,6 @@ def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     return [hit["_source"] for hit in hits if "_source" in hit]
 
 
-# def query_datasets_old(q: str, params: Dict[str, str]) -> List[Dict]:
-#     query = construct_query(q, params)
-#     results = es_client.search(query)
-#     hits = results["hits"]["hits"]
-#     return [hit["_source"] for hit in hits if "_source" in hit]
-
-
 def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
     search_params = {
         field: args[field] for field in AVAILABLE_SEARCH_PARAMETERS if field in args
@@ -96,5 +88,6 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         url,
         headers={"Content-Type": "application/json"},
         json=search_operation.model_dump_json(),
+        timeout=10,
     )
     return response.json()

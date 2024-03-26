@@ -1,8 +1,8 @@
 from typing import List
-import pytest
 
 from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
 from fdk_rss_atom_feed.query import construct_query
+import pytest
 
 
 @pytest.mark.unit
