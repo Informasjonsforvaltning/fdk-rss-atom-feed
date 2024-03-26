@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Dict
 
 from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
 
@@ -20,22 +20,22 @@ AVAILABLE_SEARCH_PARAMETERS = (
 )
 
 
-def parse_filter_list(string: str | None) -> list[str] | None:
+def parse_filter_list(string: str | None) -> SearchFilter[list[str]] | None:
     if string is None:
         return None
-    return string.split(",")
+    return SearchFilter(value=string.split(","))
 
 
-def parse_boolean(string: str | None) -> bool | None:
+def parse_boolean(string: str | None) -> SearchFilter[bool] | None:
     if string is None:
         return None
-    return string.lower() == "true"
+    return SearchFilter(value=(string.lower() == "true"))
 
 
-def parse_string(string: str | None) -> str | None:
+def parse_string(string: str | None) -> SearchFilter[str] | None:
     if string is None:
         return None
-    return string
+    return SearchFilter(value=string)
 
 
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
@@ -48,18 +48,14 @@ def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperati
 
 def construct_filters(params: Dict[str, str]) -> Filters:
     return Filters(
-        openData=SearchFilter(parse_boolean(params.get("opendata", None))),
-        orgPath=SearchFilter(parse_string(params.get("orgPath", None))),
-        accessRights=SearchFilter(parse_string(params.get("accessrights", None))),
-        dataTheme=SearchFilter(parse_filter_list(params.get("theme", None))),
-        losTheme=SearchFilter(parse_filter_list(params.get("losTheme", None))),
-        spatial=SearchFilter(parse_filter_list(params.get("spatial", None))),
-        provenance=SearchFilter(parse_string(params.get("provenance", None))),
-        formats=SearchFilter(parse_filter_list(params.get("formats", None))),
+        openData=parse_boolean(params.get("opendata", None)),
+        orgPath=parse_string(params.get("orgPath", None)),
+        accessRights=parse_string(params.get("accessrights", None)),
+        dataTheme=parse_filter_list(params.get("theme", None)),
+        losTheme=parse_filter_list(params.get("losTheme", None)),
+        spatial=parse_filter_list(params.get("spatial", None)),
+        provenance=parse_string(params.get("provenance", None)),
+        formats=parse_filter_list(params.get("formats", None)),
         uri=None,
-        lastXDays=SearchFilter(value=1),
+        lastXDays=None,
     )
-
-
-def search(searchOperation: SearchOperation) -> Dict[str, Any]:
-    return dict()

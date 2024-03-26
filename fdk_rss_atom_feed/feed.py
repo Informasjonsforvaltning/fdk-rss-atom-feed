@@ -1,10 +1,12 @@
 from enum import Enum
 import os
-from typing import Dict, List
+from typing import Any, Dict, List
 from urllib.parse import urlencode
 
-# from fdk_rss_atom_feed import es_client
-from fdk_rss_atom_feed.query import construct_query, search
+import requests
+
+from fdk_rss_atom_feed.model import SearchOperation
+from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
 
@@ -66,7 +68,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     query = construct_query(q, params)
-    results = search(query)
+    results = search(query, BASE_URL)
     hits = results["hits"]["hits"]
     return [hit["_source"] for hit in hits if "_source" in hit]
 
@@ -87,3 +89,12 @@ def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
 
 def url_encode(params: Dict[str, str]) -> str:
     return f"?{urlencode(params)}" if len(params) > 0 else ""
+
+
+def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
+    response = requests.post(
+        url,
+        headers={"Content-Type": "application/json"},
+        json=search_operation.model_dump_json(),
+    )
+    return response.json()

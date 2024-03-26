@@ -1,16 +1,14 @@
 from typing import Generic, TypeVar
-from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
 
-@dataclass
-class SearchFilter(Generic[T]):
+class SearchFilter(BaseModel, Generic[T]):
     value: T | None = None
 
 
-@dataclass
-class Filters:
+class Filters(BaseModel):
     openData: SearchFilter[bool] | None = None
     orgPath: SearchFilter[str] | None = None
     accessRights: SearchFilter[str] | None = None
@@ -20,24 +18,21 @@ class Filters:
     provenance: SearchFilter[str] | None = None
     formats: SearchFilter[list[str]] | None = None
     uri: SearchFilter[list[str]] | None = None
-    lastXDays: SearchFilter[int] | None = SearchFilter(value=1)
+    lastXDays: SearchFilter[int] | None = None
 
 
-@dataclass
-class Fields:
+class Fields(BaseModel):
     title: bool = True
     description: bool = True
     keyword: bool = True
 
 
-@dataclass
-class Sort:
+class Sort(BaseModel):
     field: str = "FIRST_HARVESTED"
     direction: str = "DESC"
 
 
-@dataclass
-class SearchOperation:
+class SearchOperation(BaseModel):
     query: str | None = None
     filters: Filters = Filters()
     fields: Fields = Fields()
