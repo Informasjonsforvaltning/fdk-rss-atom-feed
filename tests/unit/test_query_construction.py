@@ -1,3 +1,4 @@
+from typing import List
 import pytest
 
 from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
@@ -19,13 +20,13 @@ def test_construct_query() -> None:
     expected = SearchOperation(
         query="test query",
         filters=Filters(
-            openData=SearchFilter(value=True),
-            orgPath=SearchFilter(value="987654321"),
-            accessRights=SearchFilter(value="PUBLIC"),
-            dataTheme=SearchFilter(value=["AGRI", "GOVE"]),
-            losTheme=SearchFilter(value=["theme1", "theme2"]),
-            spatial=SearchFilter(value=["Oslo"]),
-            provenance=SearchFilter(value="PROVENANCE"),
+            openData=SearchFilter[bool](value=True),
+            orgPath=SearchFilter[str](value="987654321"),
+            accessRights=SearchFilter[str](value="PUBLIC"),
+            dataTheme=SearchFilter[List[str]](value=["AGRI", "GOVE"]),
+            losTheme=SearchFilter[List[str]](value=["theme1", "theme2"]),
+            spatial=SearchFilter[List[str]](value=["Oslo"]),
+            provenance=SearchFilter[str](value="PROVENANCE"),
             formats=None,
             uri=None,
             lastXDays=None,

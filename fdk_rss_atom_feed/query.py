@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
 
@@ -20,22 +20,22 @@ AVAILABLE_SEARCH_PARAMETERS = (
 )
 
 
-def parse_filter_list(string: str | None) -> SearchFilter[list[str]] | None:
+def parse_filter_list(string: str | None) -> SearchFilter[List[str]] | None:
     if string is None:
         return None
-    return SearchFilter(value=string.split(","))
+    return SearchFilter[List[str]](value=string.split(","))
 
 
 def parse_boolean(string: str | None) -> SearchFilter[bool] | None:
     if string is None:
         return None
-    return SearchFilter(value=(string.lower() == "true"))
+    return SearchFilter[bool](value=(string.lower() == "true"))
 
 
 def parse_string(string: str | None) -> SearchFilter[str] | None:
     if string is None:
         return None
-    return SearchFilter(value=string)
+    return SearchFilter[str](value=string)
 
 
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
