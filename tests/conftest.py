@@ -5,6 +5,11 @@ import pytest
 import requests
 from requests.exceptions import ConnectionError
 
+SEARCH_SERVICE_BASE_URL = os.getenv(
+    "SEARCH_SERVICE_URL",
+    "https://search.api.staging.fellesdatakatalog.digdir.no",
+)
+
 
 @pytest.fixture(scope="session")
 def docker_compose_file(pytestconfig: Any) -> str:
