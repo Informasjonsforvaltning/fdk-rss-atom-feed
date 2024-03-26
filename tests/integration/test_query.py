@@ -1,4 +1,4 @@
-from fdk_rss_atom_feed.feed import search_params
+from fdk_rss_atom_feed.feed import check_search_params
 from fdk_rss_atom_feed.query import construct_query
 import pytest
 
@@ -26,7 +26,7 @@ def test_empty_query() -> None:
 @pytest.mark.integration
 def test_full_query() -> None:
     """Assert full query is correct."""
-    params = search_params(
+    params = check_search_params(
         {
             "opendata": "true",
             "theme": "EDUC",

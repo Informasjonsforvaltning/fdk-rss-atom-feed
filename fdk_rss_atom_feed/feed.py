@@ -3,8 +3,8 @@ import os
 from typing import Dict, List
 from urllib.parse import urlencode
 
-from fdk_rss_atom_feed import es_client
-from fdk_rss_atom_feed.query import construct_query
+# from fdk_rss_atom_feed import es_client
+from fdk_rss_atom_feed.query import construct_query, search
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
 
@@ -30,7 +30,7 @@ class FeedType(Enum):
 
 
 def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
-    params = search_params(args)
+    params = check_search_params(args)
     url = f"{BASE_URL}{url_encode(params)}"
 
     feed_generator = FeedGenerator()
@@ -66,16 +66,22 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     query = construct_query(q, params)
-    results = es_client.search(query)
+    results = search(query)
     hits = results["hits"]["hits"]
     return [hit["_source"] for hit in hits if "_source" in hit]
 
 
-def search_params(args: Dict[str, str]) -> Dict[str, str]:
+# def query_datasets_old(q: str, params: Dict[str, str]) -> List[Dict]:
+#     query = construct_query(q, params)
+#     results = es_client.search(query)
+#     hits = results["hits"]["hits"]
+#     return [hit["_source"] for hit in hits if "_source" in hit]
+
+
+def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
     search_params = {
         field: args[field] for field in AVAILABLE_SEARCH_PARAMETERS if field in args
     }
-    search_params["sortfield"] = "harvest.firstHarvested"
     return search_params
 
 
