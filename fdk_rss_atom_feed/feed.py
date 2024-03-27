@@ -1,4 +1,5 @@
 from enum import Enum
+from json import JSONDecodeError
 import logging
 import os
 from typing import Any, Dict, List
@@ -150,4 +151,11 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         )
         abort(500)
 
-    return response.json()
+    try:
+        data = response.json()
+    except JSONDecodeError as e:
+        logging.warning(e.msg)
+        logging.warning("Failed to decode search response")
+        abort(500)
+
+    return data
