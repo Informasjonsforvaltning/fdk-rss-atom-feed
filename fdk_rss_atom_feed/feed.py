@@ -1,7 +1,10 @@
 from enum import Enum
+import logging
 import os
 from typing import Any, Dict, List
 from urllib.parse import urlencode
+
+from flask import abort
 
 from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
@@ -84,10 +87,28 @@ def url_encode(params: Dict[str, str]) -> str:
 
 
 def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
-    response = requests.post(
-        url,
-        headers={"Content-Type": "application/json"},
-        json=search_operation.model_dump_json(),
-        timeout=10,
-    )
+    try:
+        response = requests.post(
+            url,
+            headers={"Content-Type": "application/json"},
+            json=search_operation.model_dump_json(),
+            timeout=10,
+        )
+        response.raise_for_status()
+    except ConnectionError:
+        logging.warning("Connection error when fetching search results")
+        abort(500)
+    except requests.HTTPError as e:
+        logging.warning(f"HTTP error when fetching search results: {e}")
+        abort(500)
+    except TimeoutError:
+        logging.warning("Search request timed out")
+        abort(500)
+
+    if response.status_code != 200:
+        logging.warning(
+            f"Search request failed with status code {response.status_code}"
+        )
+        abort(500)
+
     return response.json()
