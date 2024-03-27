@@ -1,18 +1,22 @@
 from enum import Enum
+from json import JSONDecodeError
+import logging
 import os
-from typing import Dict, List
+from typing import Any, Dict, List
 from urllib.parse import urlencode
 
-from fdk_rss_atom_feed import es_client
+from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
+from flask import abort
+import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
 BASE_URL = f"{FDK_BASE_URI}/datasets"
 
-AVAILABLE_SEARCH_PARAMETERS = (
+ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
     "losTheme",
     "theme",
@@ -21,7 +25,40 @@ AVAILABLE_SEARCH_PARAMETERS = (
     "orgPath",
     "spatial",
     "provenance",
+    # Aligned with search-service:
+    "query",
+    "openData",
+    "dataTheme",
+    "accessRights",
 )
+
+
+SEARCH_SERVICE_PARAMS = (
+    "query",
+    "openData",
+    "losTheme",
+    "dataTheme",
+    "accessRights",
+    "orgPath",
+    "spatial",
+    "provenance",
+)
+
+
+param_map: Dict[str, str] = {
+    "q": "query",
+    "query": "query",
+    "losTheme": "losTheme",
+    "theme": "dataTheme",
+    "dataTheme": "dataTheme",
+    "opendata": "openData",
+    "openData": "openData",
+    "accessrights": "accessRights",
+    "accessRights": "accessRights",
+    "orgPath": "orgPath",
+    "spatial": "spatial",
+    "provenance": "provenance",
+}
 
 
 class FeedType(Enum):
@@ -30,7 +67,7 @@ class FeedType(Enum):
 
 
 def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
-    params = search_params(args)
+    params = check_search_params(args)
     url = f"{BASE_URL}{url_encode(params)}"
 
     feed_generator = FeedGenerator()
@@ -39,7 +76,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
     feed_generator.title("Felles datakatalog - Datasett")
     feed_generator.description("En samling av datasett publisert i Felles datakatalog")
 
-    datasets = query_datasets(params.get("q", "").strip(), params)
+    datasets = query_datasets(params.get("query", "").strip(), params)
     for dataset in datasets:
         feed_entry = feed_generator.add_entry()
 
@@ -66,18 +103,59 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     query = construct_query(q, params)
-    results = es_client.search(query)
+    results = search(query, BASE_URL)
     hits = results["hits"]["hits"]
     return [hit["_source"] for hit in hits if "_source" in hit]
 
 
-def search_params(args: Dict[str, str]) -> Dict[str, str]:
-    search_params = {
-        field: args[field] for field in AVAILABLE_SEARCH_PARAMETERS if field in args
+def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
+    valid_in_params = {
+        param_map[field]: args[field]
+        for field in ALL_AVAILABLE_SEARCH_PARAMETERS
+        if field in args
     }
-    search_params["sortfield"] = "harvest.firstHarvested"
-    return search_params
+    search_service_params = {
+        key: value
+        for key, value in valid_in_params.items()
+        if key in SEARCH_SERVICE_PARAMS
+    }
+    return search_service_params
 
 
 def url_encode(params: Dict[str, str]) -> str:
     return f"?{urlencode(params)}" if len(params) > 0 else ""
+
+
+def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
+    try:
+        response = requests.post(
+            url,
+            headers={"Content-Type": "application/json"},
+            json=search_operation.model_dump_json(),
+            timeout=10,
+        )
+        response.raise_for_status()
+    except ConnectionError:
+        logging.warning("Connection error when fetching search results")
+        abort(500)
+    except requests.HTTPError as e:
+        logging.warning(f"HTTP error when fetching search results: {e}")
+        abort(500)
+    except TimeoutError:
+        logging.warning("Search request timed out")
+        abort(500)
+
+    if response.status_code != 200:
+        logging.warning(
+            f"Search request failed with status code {response.status_code}"
+        )
+        abort(500)
+
+    try:
+        data = response.json()
+    except JSONDecodeError as e:
+        logging.warning(e.msg)
+        logging.warning("Failed to decode search response")
+        abort(500)
+
+    return data

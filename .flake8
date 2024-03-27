@@ -4,4 +4,5 @@ ignore = ANN101,ANN401,E501,E902,W503
 max-line-length = 120
 per-file-ignores =
   tests/*: S101, S113
+  fdk_rss_atom_feed/model.py: N815
 import-order-style = google
