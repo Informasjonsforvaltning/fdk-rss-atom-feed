@@ -4,19 +4,18 @@ import os
 from typing import Any, Dict, List
 from urllib.parse import urlencode
 
-from flask import abort
-
 from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedGenerator
+from flask import abort
 import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
 BASE_URL = f"{FDK_BASE_URI}/datasets"
 
-AVAILABLE_SEARCH_PARAMETERS = (
+ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
     "losTheme",
     "theme",
@@ -25,7 +24,40 @@ AVAILABLE_SEARCH_PARAMETERS = (
     "orgPath",
     "spatial",
     "provenance",
+    # Aligned with search-service:
+    "query",
+    "openData",
+    "dataTheme",
+    "accessRights",
 )
+
+
+SEARCH_SERVICE_PARAMS = (
+    "query",
+    "openData",
+    "losTheme",
+    "dataTheme",
+    "accessRights",
+    "orgPath",
+    "spatial",
+    "provenance",
+)
+
+
+param_map: Dict[str, str] = {
+    "q": "query",
+    "query": "query",
+    "losTheme": "losTheme",
+    "theme": "dataTheme",
+    "dataTheme": "dataTheme",
+    "opendata": "openData",
+    "openData": "openData",
+    "accessrights": "accessRights",
+    "accessRights": "accessRights",
+    "orgPath": "orgPath",
+    "spatial": "spatial",
+    "provenance": "provenance",
+}
 
 
 class FeedType(Enum):
@@ -43,7 +75,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
     feed_generator.title("Felles datakatalog - Datasett")
     feed_generator.description("En samling av datasett publisert i Felles datakatalog")
 
-    datasets = query_datasets(params.get("q", "").strip(), params)
+    datasets = query_datasets(params.get("query", "").strip(), params)
     for dataset in datasets:
         feed_entry = feed_generator.add_entry()
 
@@ -76,10 +108,17 @@ def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
 
 
 def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
-    search_params = {
-        field: args[field] for field in AVAILABLE_SEARCH_PARAMETERS if field in args
+    valid_in_params = {
+        param_map[field]: args[field]
+        for field in ALL_AVAILABLE_SEARCH_PARAMETERS
+        if field in args
     }
-    return search_params
+    search_service_params = {
+        key: value
+        for key, value in valid_in_params.items()
+        if key in SEARCH_SERVICE_PARAMS
+    }
+    return search_service_params
 
 
 def url_encode(params: Dict[str, str]) -> str:

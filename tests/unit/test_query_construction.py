@@ -1,6 +1,11 @@
 from typing import List
 
-from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
+from fdk_rss_atom_feed.model import (
+    Fields,
+    Filters,
+    SearchFilter,
+    SearchOperation,
+)
 from fdk_rss_atom_feed.query import construct_query
 import pytest
 
@@ -8,11 +13,11 @@ import pytest
 @pytest.mark.unit
 def test_construct_query() -> None:
     query = {
-        "q": "test query",
+        "query": "test query",
         "losTheme": "theme1,theme2",
-        "theme": "AGRI,GOVE",
-        "opendata": "true",
-        "accessrights": "PUBLIC",
+        "dataTheme": "AGRI,GOVE",
+        "openData": "true",
+        "accessRights": "PUBLIC",
         "orgPath": "987654321",
         "spatial": "Oslo",
         "provenance": "PROVENANCE",
@@ -33,13 +38,15 @@ def test_construct_query() -> None:
         ),
         fields=Fields(title=True, description=True, keyword=True),
     )
-    assert construct_query(search_string=query.get("q", ""), params=query) == expected
+    assert (
+        construct_query(search_string=query.get("query", ""), params=query) == expected
+    )
 
 
 @pytest.mark.unit
 def test_construct_query_only_query_text() -> None:
     query = {
-        "q": "test query",
+        "query": "test query",
     }
     expected = SearchOperation(
         query="test query",
@@ -57,4 +64,4 @@ def test_construct_query_only_query_text() -> None:
         ),
         fields=Fields(title=True, description=True, keyword=True),
     )
-    assert construct_query(query.get("q", ""), query) == expected
+    assert construct_query(query.get("query", ""), query) == expected

@@ -1,26 +1,16 @@
 from typing import Dict, List
 
-from fdk_rss_atom_feed.model import Fields, Filters, SearchFilter, SearchOperation
-
-
-AVAILABLE_QUERY_PARAMS = (
-    "query",
-    "description",
-    "keyword",
-)
-AVAILABLE_SEARCH_PARAMETERS = (
-    "q",
-    "losTheme",
-    "theme",
-    "opendata",
-    "accessrights",
-    "orgPath",
-    "spatial",
-    "provenance",
+from fdk_rss_atom_feed.model import (
+    Fields,
+    Filters,
+    SearchFilter,
+    SearchOperation,
 )
 
 
-def parse_filter_list(string: str | None) -> SearchFilter[List[str]] | None:
+def parse_filter_list(
+    string: str | None,
+) -> SearchFilter[List[str]] | None:
     if string is None:
         return None
     return SearchFilter[List[str]](value=string.split(","))
@@ -48,10 +38,10 @@ def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperati
 
 def construct_filters(params: Dict[str, str]) -> Filters:
     return Filters(
-        openData=parse_boolean(params.get("opendata", None)),
+        openData=parse_boolean(params.get("openData", None)),
         orgPath=parse_string(params.get("orgPath", None)),
-        accessRights=parse_string(params.get("accessrights", None)),
-        dataTheme=parse_filter_list(params.get("theme", None)),
+        accessRights=parse_string(params.get("accessRights", None)),
+        dataTheme=parse_filter_list(params.get("dataTheme", None)),
         losTheme=parse_filter_list(params.get("losTheme", None)),
         spatial=parse_filter_list(params.get("spatial", None)),
         provenance=parse_string(params.get("provenance", None)),
