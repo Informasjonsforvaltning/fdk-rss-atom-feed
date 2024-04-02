@@ -107,18 +107,18 @@ def populate_feed_entry(dataset: Dict[str, Any], feed_entry: FeedEntry) -> None:
         or ""
     )
     feed_entry.author(name=publisher_name)
-    feed_entry.published(dataset["harvest"]["firstHarvested"])
+    feed_entry.published(dataset["metadata"]["firstHarvested"])
 
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     query = construct_query(q, params)
-    results = search(query, DATASETS_SEARCH_URL)
+    response = search(query, DATASETS_SEARCH_URL)
     try:
-        results = results["hits"]
+        hits: List[Dict] = response["hits"]
     except KeyError:
-        logging.warning("Failed to ")
+        logging.warning("Failed to get hits from search results")
         abort(500)
-    return results["hits"]
+    return hits
 
 
 def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
