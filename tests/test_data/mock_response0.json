@@ -1,0 +1,150 @@
+{
+  "hits": [
+    {
+      "id": "7c5a0af9-e275-3d85-9871-5495f42530d8",
+      "uri": "https://example.com/test/relasjon/begrep",
+      "catalog": {
+        "description": { "nb": "Katalog for teste av relasjoner" },
+        "id": "fdd94986-9ebb-353d-9ecb-3f3ba333f570",
+        "publisher": {
+          "id": "991825827",
+          "uri": "https://data.brreg.no/enhetsregisteret/api/enheter/991825827",
+          "orgPath": "/STAT/972417858/991825827",
+          "name": "DIGITALISERINGSDIREKTORATET",
+          "prefLabel": {
+            "nb": "Digitaliseringsdirektoratet",
+            "en": "The Norwegian Digitalisation Agency"
+          }
+        },
+        "title": { "nb": "Test av relasjoner" },
+        "uri": "https://example.com/test/relasjon"
+      },
+      "dataTheme": [
+        {
+          "title": {
+            "nb": "Energi",
+            "nn": "Energi",
+            "no": "Energi",
+            "en": "Energy"
+          },
+          "code": "ENER"
+        }
+      ],
+      "description": {
+        "nb": "Dette er en test av å relatere til begrep i forbindelse med høsting av datasett_2702."
+      },
+      "fdkFormatPrefixed": ["UNKNOWN null"],
+      "metadata": {
+        "firstHarvested": "2023-02-07T11:08:26Z",
+        "changed": ["2023-09-25T10:00:04Z"],
+        "deleted": false,
+        "timestamp": 1695636033000
+      },
+      "isOpenData": false,
+      "losTheme": [
+        {
+          "name": { "nb": "Allergi", "nn": "Allergi", "en": "Allergies" },
+          "losPaths": ["helse-og-omsorg/folkehelse/allergi"]
+        }
+      ],
+      "organization": {
+        "id": "991825827",
+        "uri": "https://data.brreg.no/enhetsregisteret/api/enheter/991825827",
+        "orgPath": "/STAT/972417858/991825827",
+        "name": "DIGITALISERINGSDIREKTORATET",
+        "prefLabel": {
+          "nb": "Digitaliseringsdirektoratet",
+          "en": "The Norwegian Digitalisation Agency"
+        }
+      },
+      "searchType": "DATASET",
+      "title": {
+        "nb": "Test av relasjon til begrep",
+        "nn": "Test av relasjon til omgrep",
+        "en": "Test of relation to concept"
+      },
+      "relations": [
+        {
+          "uri": "https://example.com/test/relasjon/begrep/datasettserie",
+          "type": "inSeries"
+        },
+        {
+          "uri": "http://begrepskatalogen/begrep/testURISomIkkeFungerer",
+          "type": "subject"
+        },
+        {
+          "uri": "http://begrepskatalogen/begrep/testURISomIkkeFungererMedPrefLabel",
+          "type": "subject"
+        },
+        {
+          "uri": "https://concept-catalog.demo.fellesdatakatalog.digdir.no/collections/555111013/concepts/422c6ef9-99f8-4f55-a286-a9a9c9fbd388",
+          "type": "subject"
+        },
+        {
+          "uri": "https://concept-catalog.staging.fellesdatakatalog.digdir.no/collections/555111026/concepts/c8467f0b-f997-4bc6-80e5-a368af63628f",
+          "type": "subject"
+        },
+        { "uri": "https://data.nav.no/begrep/BEGREP-261", "type": "subject" },
+        {
+          "uri": "https://example.com/test/relasjon/begrep/begrepIkkeHostetTilFDK",
+          "type": "subject"
+        },
+        {
+          "uri": "https://raw.githubusercontent.com/Informasjonsforvaltning/dcat-ap-no/develop/examples/begrepIkkeHostet",
+          "type": "subject"
+        }
+      ],
+      "isAuthoritative": false,
+      "isRelatedToTransportportal": false
+    },
+    {
+      "id": "deead2b7-e50c-3285-9f38-807f8f816dac",
+      "uri": "https://example.com/test/relasjon/begrep/datasettserie",
+      "catalog": {
+        "description": { "nb": "Katalog for teste av relasjoner" },
+        "id": "fdd94986-9ebb-353d-9ecb-3f3ba333f570",
+        "publisher": {
+          "id": "991825827",
+          "uri": "https://data.brreg.no/enhetsregisteret/api/enheter/991825827",
+          "orgPath": "/STAT/972417858/991825827",
+          "name": "DIGITALISERINGSDIREKTORATET",
+          "prefLabel": {
+            "nb": "Digitaliseringsdirektoratet",
+            "en": "The Norwegian Digitalisation Agency"
+          }
+        },
+        "title": { "nb": "Test av relasjoner" },
+        "uri": "https://example.com/test/relasjon"
+      },
+      "description": {
+        "nb": "Test av relasjon mellom datasett og datasettserie via høsting."
+      },
+      "fdkFormatPrefixed": [],
+      "metadata": {
+        "firstHarvested": "2023-09-22T12:00:06Z",
+        "changed": ["2023-09-25T10:00:04Z"],
+        "deleted": false,
+        "timestamp": 1695636033000
+      },
+      "isOpenData": false,
+      "organization": {
+        "id": "991825827",
+        "uri": "https://data.brreg.no/enhetsregisteret/api/enheter/991825827",
+        "orgPath": "/STAT/972417858/991825827",
+        "name": "DIGITALISERINGSDIREKTORATET",
+        "prefLabel": {
+          "nb": "Digitaliseringsdirektoratet",
+          "en": "The Norwegian Digitalisation Agency"
+        }
+      },
+      "searchType": "DATASET",
+      "title": { "nb": "Test datasettserie" },
+      "relations": [],
+      "specializedType": "DATASET_SERIES",
+      "isAuthoritative": false,
+      "isRelatedToTransportportal": false
+    }
+  ],
+  "aggregations": {},
+  "page": {}
+}
