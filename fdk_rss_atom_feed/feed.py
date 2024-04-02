@@ -71,7 +71,7 @@ class FeedType(Enum):
     ATOM = "atom"
 
 
-def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
+def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> bytes:
     params = check_search_params(args)
     url = f"{BASE_URL}{url_encode(params)}"
 
