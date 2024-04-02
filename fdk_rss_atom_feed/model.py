@@ -1,4 +1,4 @@
-from typing import Generic, List, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Optional, TypeVar
 
 from pydantic import BaseModel
 
@@ -37,3 +37,6 @@ class SearchOperation(BaseModel):
     query: str | None = None
     filters: Filters = Filters()
     fields: Fields = Fields()
+    sort: Any | None = None
+    pagination: Dict[str, int] | None = {"page": 0, "size": 10}
+    profile: Any | None = None

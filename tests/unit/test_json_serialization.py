@@ -43,7 +43,10 @@ def test_json_serialization() -> None:
                 "title": true,
                 "description": true,
                 "keyword": true
-            }
+            },
+            "sort": null,
+            "pagination": { "page": 0, "size": 10 },
+            "profile": null
         }
     """.strip()
 
