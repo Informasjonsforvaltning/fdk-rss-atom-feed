@@ -14,7 +14,7 @@ import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
-BASE_URL = f"{FDK_BASE_URI}/datasets"
+BASE_URL = f"{FDK_BASE_URI}/search/datasets"
 
 SEARCH_API = os.getenv(
     "SEARCH_API", "https://search.api.staging.fellesdatakatalog.digdir.no"
