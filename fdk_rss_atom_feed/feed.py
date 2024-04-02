@@ -8,13 +8,18 @@ from urllib.parse import urlencode
 from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
-from feedgen.feed import FeedGenerator
+from feedgen.feed import FeedEntry, FeedGenerator
 from flask import abort
 import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
 BASE_URL = f"{FDK_BASE_URI}/datasets"
+
+SEARCH_API = os.getenv(
+    "SEARCH_API", "https://search.api.staging.fellesdatakatalog.digdir.no"
+)
+DATASETS_SEARCH_URL = f"{SEARCH_API}/datasets"
 
 ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
@@ -79,19 +84,7 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
     datasets = query_datasets(params.get("query", "").strip(), params)
     for dataset in datasets:
         feed_entry = feed_generator.add_entry()
-
-        feed_entry.id(f"{BASE_URL}/{dataset['id']}")
-        feed_entry.title(translate_or_emptystr(dataset["title"]))
-        feed_entry.description(translate_or_emptystr(dataset["description"]))
-        feed_entry.link(href=f"{BASE_URL}/{dataset['id']}")
-        feed_entry.author(
-            name=translate_or_emptystr(
-                (dataset.get("publisher", {}) or {}).get("prefLabel", {})
-                or (dataset.get("publisher", {}) or {}).get("name", {})
-                or {}
-            )
-        )
-        feed_entry.published(dataset["harvest"]["firstHarvested"])
+        populate_feed_entry(dataset, feed_entry)
 
     if feed_type == FeedType.RSS:
         return feed_generator.rss_str(pretty=True)
@@ -101,11 +94,32 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> str:
         raise ValueError("Invalid feed type")
 
 
+def populate_feed_entry(dataset: Dict[str, Any], feed_entry: FeedEntry) -> None:
+    feed_entry.id(f"{BASE_URL}/{dataset['id']}")
+    feed_entry.title(translate_or_emptystr(dataset["title"]))
+    feed_entry.description(translate_or_emptystr(dataset["description"]))
+    feed_entry.link(href=f"{BASE_URL}/{dataset['id']}")
+    catalog_info: Dict = dataset.get("catalog", dict())
+    publisher: Dict = catalog_info.get("publisher", {})
+    publisher_name = (
+        translate_or_emptystr(publisher.get("prefLabel", {}))
+        or publisher.get("name")
+        or publisher.get("uri")
+        or ""
+    )
+    feed_entry.author(name=publisher_name)
+    feed_entry.published(dataset["harvest"]["firstHarvested"])
+
+
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     query = construct_query(q, params)
-    results = search(query, BASE_URL)
-    hits = results["hits"]["hits"]
-    return [hit["_source"] for hit in hits if "_source" in hit]
+    results = search(query, DATASETS_SEARCH_URL)
+    try:
+        results = results["hits"]
+    except KeyError:
+        logging.warning("Failed to ")
+        abort(500)
+    return results["hits"]
 
 
 def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
