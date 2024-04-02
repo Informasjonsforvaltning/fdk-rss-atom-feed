@@ -14,12 +14,12 @@ import requests
 
 
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
-BASE_URL = f"{FDK_BASE_URI}/search/datasets"
+BASE_URL = f"{FDK_BASE_URI}/datasets"
 
 SEARCH_API = os.getenv(
     "SEARCH_API", "https://search.api.staging.fellesdatakatalog.digdir.no"
 )
-DATASETS_SEARCH_URL = f"{SEARCH_API}/datasets"
+DATASETS_SEARCH_URL = f"{SEARCH_API}/search/datasets"
 
 ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
@@ -99,8 +99,7 @@ def populate_feed_entry(dataset: Dict[str, Any], feed_entry: FeedEntry) -> None:
     feed_entry.title(translate_or_emptystr(dataset["title"]))
     feed_entry.description(translate_or_emptystr(dataset["description"]))
     feed_entry.link(href=f"{BASE_URL}/{dataset['id']}")
-    catalog_info: Dict = dataset.get("catalog", dict())
-    publisher: Dict = catalog_info.get("publisher", {})
+    publisher: Dict = dataset.get("organization", {})
     publisher_name = (
         translate_or_emptystr(publisher.get("prefLabel", {}))
         or publisher.get("name")
