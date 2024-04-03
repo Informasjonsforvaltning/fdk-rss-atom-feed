@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <id>https://staging.fellesdatakatalog.digdir.no/datasets?sortfield=harvest.firstHarvested</id>
-  <title>Felles datakatalog - Datasett</title>
-  <link href="https://staging.fellesdatakatalog.digdir.no/datasets?sortfield=harvest.firstHarvested"/>
-  <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
-  <subtitle>En samling av datasett publisert i Felles datakatalog</subtitle>
-</feed>

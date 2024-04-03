@@ -1,4 +1,4 @@
-from fdk_rss_atom_feed.endpoint import feed, test_connection
+from fdk_rss_atom_feed.endpoint import feed
 from flask import Flask, request
 
 
@@ -14,10 +14,10 @@ def main() -> str:
 @app.route("/livez")
 def livez() -> str:
     """Liveness endpoint"""
-    return test_connection(request)
+    return "ok"
 
 
 @app.route("/readyz")
 def readyz() -> str:
     """Readiness endpoint"""
-    return test_connection(request)
+    return "ok"

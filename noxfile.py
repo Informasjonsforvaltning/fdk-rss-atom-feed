@@ -1,4 +1,5 @@
 """Nox sessions."""
+
 import sys
 
 import nox
@@ -20,7 +21,7 @@ nox.options.sessions = (
 def unit_tests(session: Session) -> None:
     """Run the unit test suite."""
     args = session.posargs
-    session.install(".", "pytest", "requests")
+    session.install(".", "pytest", "requests", "requests-mock")
     session.run(
         "pytest",
         "-m",
@@ -34,7 +35,7 @@ def unit_tests(session: Session) -> None:
 def integration_tests(session: Session) -> None:
     """Run the integration test suite."""
     args = session.posargs
-    session.install(".", "pytest", "pytest-docker", "requests")
+    session.install(".", "pytest", "pytest-docker", "requests", "requests_mock")
     session.run(
         "pytest",
         "-m",
