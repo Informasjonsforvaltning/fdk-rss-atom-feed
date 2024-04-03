@@ -38,6 +38,6 @@ class Pagination:
 @dataclass
 class SearchOperation:
     query: str | None = None
-    filters: Filters = Filters()
+    filters: Filters | None = None
     sort: Sort | None = None
-    pagination: Pagination | None = Pagination(page=0, size=100)
+    pagination: Pagination | None = None

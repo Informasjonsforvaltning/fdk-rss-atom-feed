@@ -22,7 +22,6 @@ def test_rss_feed_generation(requests_mock: Any) -> None:
         )
 
         decoded_feed = feed.decode("utf-8")
-        print(decoded_feed)
         assert "7c5a0af9-e275-3d85-9871-5495f42530d8" in decoded_feed
         assert (
             "Dette er en test av å relatere til begrep i forbindelse med høsting av datasett_2702"
@@ -49,7 +48,6 @@ def test_atom_feed_generation(requests_mock: Any) -> None:
         )
 
         decoded_feed = feed.decode("utf-8")
-        print(decoded_feed)
         assert "7c5a0af9-e275-3d85-9871-5495f42530d8" in decoded_feed
         assert (
             "Dette er en test av å relatere til begrep i forbindelse med høsting av datasett_2702"

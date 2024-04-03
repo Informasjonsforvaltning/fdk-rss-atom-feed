@@ -7,7 +7,6 @@ import pytest
 
 
 @pytest.mark.unit
-@pytest.mark.skip(reason="reactivate when integration with search service is succesful")
 def test_json_serialization() -> None:
     search_operation = SearchOperation(
         query="test query",
@@ -40,14 +39,8 @@ def test_json_serialization() -> None:
                 "uri": null,
                 "lastXDays": null
             },
-            "fields": {
-                "title": true,
-                "description": true,
-                "keyword": true
-            },
             "sort": null,
-            "pagination": { "page": 0, "size": 10 },
-            "profile": null
+            "pagination": null
         }
     """.strip()
 

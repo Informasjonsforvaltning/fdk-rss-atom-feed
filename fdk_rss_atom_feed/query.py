@@ -2,8 +2,10 @@ from typing import Dict, List
 
 from fdk_rss_atom_feed.model import (
     Filters,
+    Pagination,
     SearchFilter,
     SearchOperation,
+    Sort,
 )
 
 
@@ -30,8 +32,9 @@ def parse_string(string: str | None) -> SearchFilter[str] | None:
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
     return SearchOperation(
         query=search_string,
-        # filters=construct_filters(params),
-        # fields=Fields(title=True, description=True, keyword=True),
+        filters=construct_filters(params),
+        sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
+        pagination=Pagination(page=0, size=100),
     )
 
 

@@ -2,15 +2,16 @@ from typing import List
 
 from fdk_rss_atom_feed.model import (
     Filters,
+    Pagination,
     SearchFilter,
     SearchOperation,
+    Sort,
 )
 from fdk_rss_atom_feed.query import construct_query
 import pytest
 
 
 @pytest.mark.unit
-@pytest.mark.skip(reason="reactivate when integration with search service is succesful")
 def test_construct_query() -> None:
     query = {
         "query": "test query",
@@ -36,6 +37,8 @@ def test_construct_query() -> None:
             uri=None,
             lastXDays=None,
         ),
+        sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
+        pagination=Pagination(page=0, size=100),
     )
     assert (
         construct_query(search_string=query.get("query", ""), params=query) == expected
@@ -43,7 +46,6 @@ def test_construct_query() -> None:
 
 
 @pytest.mark.unit
-@pytest.mark.skip(reason="reactivate when integration with search service is succesful")
 def test_construct_query_only_query_text() -> None:
     query = {
         "query": "test query",
@@ -62,5 +64,7 @@ def test_construct_query_only_query_text() -> None:
             uri=None,
             lastXDays=None,
         ),
+        sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
+        pagination=Pagination(page=0, size=100),
     )
     assert construct_query(query.get("query", ""), query) == expected
