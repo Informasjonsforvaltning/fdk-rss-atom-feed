@@ -144,7 +144,7 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         response = requests.post(
             url,
             headers={"Content-Type": "application/json", "Accept": "application/json"},
-            json=search_operation.model_dump_json(),
+            json=search_operation.model_dump(),
             timeout=10,
         )
         response.raise_for_status()
