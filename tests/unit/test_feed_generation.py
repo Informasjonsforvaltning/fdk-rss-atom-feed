@@ -2,17 +2,13 @@ from typing import Any
 
 from fdk_rss_atom_feed.feed import FeedType, generate_feed
 import pytest
-
-
-DATASETS_SEARCH_URL = (
-    "https://search.api.staging.fellesdatakatalog.digdir.no/search/datasets"
-)
+from tests.conftest import SEARCH_SERVICE_BASE_URL
 
 
 @pytest.mark.unit
 def test_rss_feed_generation(requests_mock: Any) -> None:
     with open("tests/test_data/mock_response0.json") as f:
-        requests_mock.post(f"{DATASETS_SEARCH_URL}", text=f.read())
+        requests_mock.post(f"{SEARCH_SERVICE_BASE_URL}/search/datasets", text=f.read())
 
         feed = generate_feed(
             FeedType.RSS,
@@ -38,7 +34,7 @@ def test_rss_feed_generation(requests_mock: Any) -> None:
 @pytest.mark.unit
 def test_atom_feed_generation(requests_mock: Any) -> None:
     with open("tests/test_data/mock_response0.json") as f:
-        requests_mock.post(f"{DATASETS_SEARCH_URL}", text=f.read())
+        requests_mock.post(f"{SEARCH_SERVICE_BASE_URL}/search/datasets", text=f.read())
 
         feed = generate_feed(
             FeedType.ATOM,

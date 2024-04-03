@@ -35,7 +35,7 @@ def unit_tests(session: Session) -> None:
 def integration_tests(session: Session) -> None:
     """Run the integration test suite."""
     args = session.posargs
-    session.install(".", "pytest", "pytest-docker", "requests")
+    session.install(".", "pytest", "pytest-docker", "requests", "requests_mock")
     session.run(
         "pytest",
         "-m",

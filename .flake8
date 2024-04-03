@@ -5,4 +5,5 @@ max-line-length = 120
 per-file-ignores =
   tests/*: S101, S113
   fdk_rss_atom_feed/model.py: N815
+  tests/conftest.py: ANN001, ANN201
 import-order-style = google
