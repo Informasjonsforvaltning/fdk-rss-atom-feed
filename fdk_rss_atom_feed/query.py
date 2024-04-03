@@ -49,5 +49,5 @@ def construct_filters(params: Dict[str, str]) -> Filters:
         provenance=parse_string(params.get("provenance", None)),
         formats=parse_filter_list(params.get("formats", None)),
         uri=None,
-        lastXDays=None,
+        lastXDays=SearchFilter[int](1),
     )

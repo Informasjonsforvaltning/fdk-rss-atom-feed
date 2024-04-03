@@ -41,3 +41,7 @@ class SearchOperation:
     filters: Filters | None = None
     sort: Sort | None = None
     pagination: Pagination | None = None
+
+
+class BadParamError(ValueError):
+    """Raised when an invalid parameter is passed to the API."""

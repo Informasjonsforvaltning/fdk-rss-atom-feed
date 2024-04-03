@@ -6,11 +6,10 @@ import os
 from typing import Any, Dict, List
 from urllib.parse import urlencode
 
-from fdk_rss_atom_feed.model import SearchOperation
+from fdk_rss_atom_feed.model import BadParamError, SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedEntry, FeedGenerator
-from flask import abort
 import requests
 
 
@@ -73,7 +72,10 @@ class FeedType(Enum):
 
 
 def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> bytes:
-    params = check_search_params(args)
+    if len((invalid_params := invalid_search_params(args))) > 0:
+        raise BadParamError(f"{', '.join(invalid_params)}")
+
+    params = get_search_params(args)
     url = f"{BASE_URL}{url_encode(params)}"
 
     feed_generator = FeedGenerator()
@@ -118,19 +120,25 @@ def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
         hits: List[Dict] = response["hits"]
     except KeyError:
         logging.warning("Failed to get hits from search results")
-        abort(500)
+        raise
     return hits
 
 
-def check_search_params(args: Dict[str, str]) -> Dict[str, str]:
-    valid_in_params = {
+def invalid_search_params(args: Dict[str, str]) -> List[str]:
+    return [
+        param for param in args.keys() if param not in ALL_AVAILABLE_SEARCH_PARAMETERS
+    ]
+
+
+def get_search_params(args: Dict[str, str]) -> Dict[str, str]:
+    valid_input_params = {
         param_map[field]: args[field]
         for field in ALL_AVAILABLE_SEARCH_PARAMETERS
         if field in args
     }
     search_service_params = {
         key: value
-        for key, value in valid_in_params.items()
+        for key, value in valid_input_params.items()
         if key in SEARCH_SERVICE_PARAMS
     }
     return search_service_params
@@ -151,25 +159,25 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         response.raise_for_status()
     except ConnectionError:
         logging.warning("Connection error when fetching search results")
-        abort(500)
+        raise
     except requests.HTTPError as e:
         logging.warning(f"HTTP error when fetching search results: {e}")
-        abort(500)
+        raise
     except TimeoutError:
         logging.warning("Search request timed out")
-        abort(500)
+        raise
 
     if response.status_code != 200:
         logging.warning(
             f"Search request failed with status code {response.status_code}"
         )
-        abort(500)
+        raise
 
     try:
         data = response.json()
     except JSONDecodeError as e:
         logging.warning(e.msg)
         logging.warning("Failed to decode search response")
-        abort(500)
+        raise
 
     return data

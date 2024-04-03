@@ -1,4 +1,4 @@
-from fdk_rss_atom_feed.feed import check_search_params
+from fdk_rss_atom_feed.feed import get_search_params, invalid_search_params
 import pytest
 
 
@@ -17,7 +17,7 @@ def test_search_param_validation() -> None:
     }
 
     expected = input.copy()
-    assert check_search_params(input) == expected
+    assert get_search_params(input) == expected
 
 
 @pytest.mark.unit
@@ -30,8 +30,8 @@ def test_search_param_validation_with_invalid_params() -> None:
         "anotherInvalidParam": "something2",
     }
 
-    assert check_search_params(input).get("invalidParam", None) is None
-    assert check_search_params(input).get("anotherInvalidParam", None) is None
+    assert get_search_params(input).get("invalidParam", None) is None
+    assert get_search_params(input).get("anotherInvalidParam", None) is None
 
 
 @pytest.mark.unit
@@ -59,4 +59,21 @@ def test_search_param_validation_new_params_api() -> None:
         "provenance": "PROVENANCE",
     }
 
-    assert check_search_params(input) == expected
+    assert get_search_params(input) == expected
+
+
+@pytest.mark.unit
+def test_catch_invalid_search_params() -> None:
+    """Should return list of invalid params"""
+    input = {
+        "q": "test query",
+        "invalidParam": "x",
+        "anotherInvalidParam": "x",
+        "opendata": "true",
+        "lastInvalidParam": "x",
+        "orgPath": "987654321",
+    }
+
+    expected = ["invalidParam", "anotherInvalidParam", "lastInvalidParam"]
+
+    assert invalid_search_params(input) == expected
