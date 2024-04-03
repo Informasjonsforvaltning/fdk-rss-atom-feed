@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Generic, List, TypeVar
 
 from pydantic import BaseModel
 
@@ -10,8 +10,8 @@ class SearchFilter(BaseModel, Generic[T]):
 
 
 class Filters(BaseModel):
-    openData: Optional[SearchFilter[bool]] | None = None
-    orgPath: Optional[SearchFilter[str]] | None = None
+    openData: SearchFilter[bool] | None = None
+    orgPath: SearchFilter[str] | None = None
     accessRights: SearchFilter[str] | None = None
     dataTheme: SearchFilter[List[str]] | None = None
     losTheme: SearchFilter[List[str]] | None = None
@@ -35,8 +35,8 @@ class Sort(BaseModel):
 
 class SearchOperation(BaseModel):
     query: str | None = None
-    filters: Filters = Filters()
-    fields: Fields = Fields()
-    sort: Any | None = None
-    pagination: Dict[str, int] | None = {"page": 0, "size": 10}
-    profile: Any | None = None
+    # filters: Filters = Filters()
+    # fields: Fields = Fields()
+    # sort: Any | None = None
+    # pagination: Dict[str, int] | None = {"page": 0, "size": 100}
+    # profile: Any | None = None

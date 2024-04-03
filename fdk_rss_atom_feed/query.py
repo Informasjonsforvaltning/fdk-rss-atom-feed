@@ -1,7 +1,6 @@
 from typing import Dict, List
 
 from fdk_rss_atom_feed.model import (
-    Fields,
     Filters,
     SearchFilter,
     SearchOperation,
@@ -31,8 +30,8 @@ def parse_string(string: str | None) -> SearchFilter[str] | None:
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
     return SearchOperation(
         query=search_string,
-        filters=construct_filters(params),
-        fields=Fields(title=True, description=True, keyword=True),
+        # filters=construct_filters(params),
+        # fields=Fields(title=True, description=True, keyword=True),
     )
 
 
