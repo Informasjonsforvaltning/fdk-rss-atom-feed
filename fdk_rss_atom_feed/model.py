@@ -1,15 +1,16 @@
+from dataclasses import dataclass
 from typing import Generic, List, TypeVar
-
-from pydantic import BaseModel
 
 T = TypeVar("T")
 
 
-class SearchFilter(BaseModel, Generic[T]):
+@dataclass
+class SearchFilter(Generic[T]):
     value: T | None = None
 
 
-class Filters(BaseModel):
+@dataclass
+class Filters:
     openData: SearchFilter[bool] | None = None
     orgPath: SearchFilter[str] | None = None
     accessRights: SearchFilter[str] | None = None
@@ -22,21 +23,21 @@ class Filters(BaseModel):
     lastXDays: SearchFilter[int] | None = None
 
 
-class Fields(BaseModel):
-    title: bool = True
-    description: bool = True
-    keyword: bool = True
-
-
-class Sort(BaseModel):
+@dataclass
+class Sort:
     field: str = "FIRST_HARVESTED"
     direction: str = "DESC"
 
 
-class SearchOperation(BaseModel):
+@dataclass
+class Pagination:
+    page: int = 0
+    size: int = 100
+
+
+@dataclass
+class SearchOperation:
     query: str | None = None
-    # filters: Filters = Filters()
-    # fields: Fields = Fields()
-    # sort: Any | None = None
-    # pagination: Dict[str, int] | None = {"page": 0, "size": 100}
-    # profile: Any | None = None
+    filters: Filters = Filters()
+    sort: Sort | None = None
+    pagination: Pagination | None = Pagination(page=0, size=100)

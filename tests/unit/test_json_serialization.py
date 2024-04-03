@@ -1,6 +1,8 @@
+from dataclasses import asdict
 import json
+from typing import List
 
-from fdk_rss_atom_feed.model import SearchOperation
+from fdk_rss_atom_feed.model import Filters, SearchFilter, SearchOperation
 import pytest
 
 
@@ -9,19 +11,18 @@ import pytest
 def test_json_serialization() -> None:
     search_operation = SearchOperation(
         query="test query",
-        # filters=Filters(
-        #     openData=SearchFilter[bool](value=True),
-        #     orgPath=SearchFilter[str](value="987654321"),
-        #     accessRights=SearchFilter[str](value="PUBLIC"),
-        #     dataTheme=SearchFilter[List[str]](value=["AGRI", "GOVE"]),
-        #     losTheme=SearchFilter[List[str]](value=["theme1", "theme2"]),
-        #     spatial=SearchFilter[List[str]](value=["Oslo"]),
-        #     provenance=SearchFilter[str](value="PROVENANCE"),
-        #     formats=None,
-        #     uri=None,
-        #     lastXDays=None,
-        # ),
-        # fields=Fields(title=True, description=True, keyword=True),
+        filters=Filters(
+            openData=SearchFilter[bool](value=True),
+            orgPath=SearchFilter[str](value="987654321"),
+            accessRights=SearchFilter[str](value="PUBLIC"),
+            dataTheme=SearchFilter[List[str]](value=["AGRI", "GOVE"]),
+            losTheme=SearchFilter[List[str]](value=["theme1", "theme2"]),
+            spatial=SearchFilter[List[str]](value=["Oslo"]),
+            provenance=SearchFilter[str](value="PROVENANCE"),
+            formats=None,
+            uri=None,
+            lastXDays=None,
+        ),
     )
 
     expected = """
@@ -50,4 +51,4 @@ def test_json_serialization() -> None:
         }
     """.strip()
 
-    assert json.loads(search_operation.model_dump_json()) == json.loads(expected)
+    assert json.loads(json.dumps(asdict(search_operation))) == json.loads(expected)

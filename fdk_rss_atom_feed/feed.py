@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from enum import Enum
 from json import JSONDecodeError
 import logging
@@ -144,7 +145,7 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         response = requests.post(
             url,
             headers={"Content-Type": "application/json", "Accept": "application/json"},
-            json=search_operation.model_dump(),
+            json=asdict(search_operation),
             timeout=10,
         )
         response.raise_for_status()
