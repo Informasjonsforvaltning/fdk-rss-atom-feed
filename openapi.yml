@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  description: Service that provides RSS or Atom feed of most recently modified and added dataset descriptions at data.norge.no
+  title: fdk-rss-atom-feed
+  version: 0.1.0
+
+paths:
+  /:
+    get:
+      description: Get feed of recently modified and new dataset descriptions.
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+        - in: query
+          name: openData
+          schema:
+            type: boolean
+        - in: query
+          name: losTheme
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - in: query
+          name: dataTheme
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - in: query
+          name: accessRights
+          schema:
+            type: string
+        - in: query
+          name: orgPath
+          schema:
+            type: string
+          description: Organization number (organisasjonsnummer). Consists of 9 digits.
+        - in: query
+          name: spatial
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - in: query
+          name: provenance
+          schema:
+            type: string
+
+      responses:
+        "200":
+          content:
+            application/rss+xml:
+              schema:
+                $ref: "#/components/schemas/rss"
+
+            application/atom+xml:
+              schema:
+                $ref: "#/components/schemas/feed"
+
+          description: Successful Response
+        "400":
+          description: Bad request, bad input data.
+        "415":
+          description: Unsupported media type.
+        "500":
+          description: Internal server error.
+
+components:
+  schemas:
+    rss:
+      description: "RSS Feed"
+      externalDocs:
+        description: RSS 2.0
+        url: https://www.rssboard.org/rss-specification
+
+    feed:
+      description: "Atom Feed"
+      externalDocs:
+        description: Atom Syndication Format
+        url: https://www.ietf.org/rfc/rfc4287.txt
