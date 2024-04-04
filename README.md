@@ -1,6 +1,7 @@
 # fdk-rss-atom-feed
 
-An RSS/atom feed that returns datasets harvested the previous 24h.
+An RSS/atom feed that contains information about dataset descriptions harvested the previous 24h.
+Returns a maximum of 10,000 entries, although the number of modified datasets is usually much lower.
 The service may be queried with specific parameters to limit the results.
 
 ## Development

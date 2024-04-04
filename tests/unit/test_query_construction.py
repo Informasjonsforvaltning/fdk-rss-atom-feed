@@ -1,5 +1,6 @@
 from typing import List
 
+from fdk_rss_atom_feed.config import MAX_SEARCH_HITS
 from fdk_rss_atom_feed.model import (
     Filters,
     Pagination,
@@ -35,10 +36,10 @@ def test_construct_query() -> None:
             provenance=SearchFilter[str](value="PROVENANCE"),
             formats=None,
             uri=None,
-            lastXDays=SearchFilter[int](1),
+            lastXDaysModified=SearchFilter[int](1),
         ),
         sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
-        pagination=Pagination(page=0, size=100),
+        pagination=Pagination(page=0, size=MAX_SEARCH_HITS),
     )
     assert (
         construct_query(search_string=query.get("query", ""), params=query) == expected
@@ -62,9 +63,9 @@ def test_construct_query_only_query_text() -> None:
             provenance=None,
             formats=None,
             uri=None,
-            lastXDays=SearchFilter[int](1),
+            lastXDaysModified=SearchFilter[int](1),
         ),
         sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
-        pagination=Pagination(page=0, size=100),
+        pagination=Pagination(page=0, size=MAX_SEARCH_HITS),
     )
     assert construct_query(query.get("query", ""), query) == expected

@@ -2,24 +2,16 @@ from dataclasses import asdict
 from enum import Enum
 from json import JSONDecodeError
 import logging
-import os
 from typing import Any, Dict, List
 from urllib.parse import urlencode
 
+from fdk_rss_atom_feed.config import BASE_URL, DATASETS_SEARCH_URL
 from fdk_rss_atom_feed.model import BadParamError, SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedEntry, FeedGenerator
 import requests
 
-
-FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
-BASE_URL = f"{FDK_BASE_URI}/datasets"
-
-SEARCH_API = os.getenv(
-    "SEARCH_API", "https://search.api.staging.fellesdatakatalog.digdir.no"
-)
-DATASETS_SEARCH_URL = f"{SEARCH_API}/search/datasets"
 
 ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
