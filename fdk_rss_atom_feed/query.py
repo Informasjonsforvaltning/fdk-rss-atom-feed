@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+from fdk_rss_atom_feed.config import MAX_SEARCH_HITS
 from fdk_rss_atom_feed.model import (
     Filters,
     Pagination,
@@ -34,7 +35,7 @@ def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperati
         query=search_string,
         filters=construct_filters(params),
         sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
-        pagination=Pagination(page=0, size=100),
+        pagination=Pagination(page=0, size=MAX_SEARCH_HITS),
     )
 
 
@@ -49,5 +50,5 @@ def construct_filters(params: Dict[str, str]) -> Filters:
         provenance=parse_string(params.get("provenance", None)),
         formats=parse_filter_list(params.get("formats", None)),
         uri=None,
-        lastXDays=SearchFilter[int](1),
+        lastXDaysModified=SearchFilter[int](1),
     )

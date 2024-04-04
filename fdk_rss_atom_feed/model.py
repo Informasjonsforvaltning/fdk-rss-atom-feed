@@ -20,7 +20,7 @@ class Filters:
     provenance: SearchFilter[str] | None = None
     formats: SearchFilter[List[str]] | None = None
     uri: SearchFilter[List[str]] | None = None
-    lastXDays: SearchFilter[int] | None = None
+    lastXDaysModified: SearchFilter[int] | None = None
 
 
 @dataclass
@@ -32,7 +32,7 @@ class Sort:
 @dataclass
 class Pagination:
     page: int = 0
-    size: int = 100
+    size: int = 10
 
 
 @dataclass

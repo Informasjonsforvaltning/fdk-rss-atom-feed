@@ -7,7 +7,7 @@ info:
 paths:
   /:
     get:
-      description: Get feed of recently modified and new dataset descriptions.
+      description: Get feed of recently modified and new dataset descriptions. Returns maximum 10000 entries.
       parameters:
         - in: query
           name: query
