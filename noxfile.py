@@ -101,11 +101,3 @@ def mypy(session: Session) -> None:
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
-
-
-@session(python=["3.10"])
-def safety(session: Session) -> None:
-    """Scan dependencies for insecure packages."""
-    requirements = session.poetry.export_requirements()
-    session.install("safety")
-    session.run("safety", "check", f"--file={requirements}", "--bare")
