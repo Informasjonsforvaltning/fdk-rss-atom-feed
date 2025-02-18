@@ -17,15 +17,16 @@ def feed(request: Request) -> Any:
     """Feed entrypoint"""
 
     mimetype = request.accept_mimetypes.best
-    try:
-        feed_type = FEED_TYPES[mimetype]
-    except KeyError:
+
+    if mimetype not in FEED_TYPES.keys():
         mimetypes = ", ".join(FEED_TYPES.keys())
         supported_types = (
             "The server does not support the media type transmitted in the request."
             + f" Supported media types are: {{{mimetypes}}}."
         )
         return abort(415, supported_types)
+    else:
+        feed_type = FEED_TYPES[mimetype]
 
     try:
         feed = generate_feed(feed_type, dict(request.args.items()))

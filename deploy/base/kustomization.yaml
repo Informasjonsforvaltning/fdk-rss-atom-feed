@@ -6,5 +6,5 @@ resources:
 
 images:
 - name: fdk-rss-atom-feed
-  newName: eu.gcr.io/digdir-fdk-infra/fdk-rss-atom-feed
+  newName: ghcr.io/informasjonsforvaltning/fdk-rss-atom-feed
   newTag: $(GIT_COMMIT_SHA)
