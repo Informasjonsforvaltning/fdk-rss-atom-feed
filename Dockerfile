@@ -3,7 +3,7 @@ FROM python:3.10-slim
 WORKDIR /app
 
 RUN python3 -m pip install --root-user-action=ignore --no-cache-dir -q \
-    poetry==1.7.0
+    poetry==1.8.5
 
 COPY poetry.lock pyproject.toml ./
 RUN python3 -m poetry config virtualenvs.create false \
