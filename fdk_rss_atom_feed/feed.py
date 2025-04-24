@@ -91,8 +91,8 @@ def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> bytes:
 
 def populate_feed_entry(dataset: Dict[str, Any], feed_entry: FeedEntry) -> None:
     feed_entry.id(f"{BASE_URL}/{dataset['id']}")
-    feed_entry.title(translate_or_emptystr(dataset["title"]))
-    feed_entry.description(translate_or_emptystr(dataset["description"]))
+    feed_entry.title(translate_or_emptystr(dataset.get("title", {})))
+    feed_entry.description(translate_or_emptystr(dataset.get("description", {})))
     feed_entry.link(href=f"{BASE_URL}/{dataset['id']}")
     publisher: Dict = dataset.get("organization", {})
     publisher_name = (
@@ -102,7 +102,7 @@ def populate_feed_entry(dataset: Dict[str, Any], feed_entry: FeedEntry) -> None:
         or ""
     )
     feed_entry.author(name=publisher_name)
-    feed_entry.published(dataset["metadata"]["firstHarvested"])
+    feed_entry.published(dataset.get("metadata", {}).get("firstHarvested", ""))
 
 
 def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
