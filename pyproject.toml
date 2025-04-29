@@ -36,7 +36,7 @@ pep8-naming = "^0.14.1"
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 requests = "^2.32.3"
-pytest-docker = "^3.2.0"
+pytest-docker = "^3.2.1"
 requests-mock = "^1.12.1"
 nox-poetry = "^1.1.0"
 
