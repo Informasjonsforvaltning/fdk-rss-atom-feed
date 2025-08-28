@@ -17,7 +17,7 @@ nox.options.sessions = (
 )
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def unit_tests(session: Session) -> None:
     """Run the unit test suite."""
     args = session.posargs
@@ -31,7 +31,7 @@ def unit_tests(session: Session) -> None:
     )
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def integration_tests(session: Session) -> None:
     """Run the integration test suite."""
     args = session.posargs
@@ -45,7 +45,7 @@ def integration_tests(session: Session) -> None:
     )
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def contract_tests(session: Session) -> None:
     """Run the contract test suite."""
     args = session.posargs
@@ -59,7 +59,7 @@ def contract_tests(session: Session) -> None:
     )
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def black(session: Session) -> None:
     """Run black code formatter."""
     args = session.posargs or locations
@@ -67,7 +67,7 @@ def black(session: Session) -> None:
     session.run("black", *args)
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def lint(session: Session) -> None:
     """Lint using flake8."""
     args = session.posargs or locations
@@ -83,7 +83,7 @@ def lint(session: Session) -> None:
     session.run("flake8", *args)
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def coverage(session: Session) -> None:
     """Upload coverage data."""
     session.install("coverage[toml]", "codecov")
@@ -91,7 +91,7 @@ def coverage(session: Session) -> None:
     session.run("codecov", *session.posargs)
 
 
-@session(python=["3.10"])
+@session(python=["3.12"])
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["--install-types", "--non-interactive", *locations]
