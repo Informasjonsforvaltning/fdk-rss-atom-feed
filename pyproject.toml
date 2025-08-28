@@ -14,7 +14,7 @@ repository = "https://github.com/Informasjonsforvaltning/fdk-rss-atom-feed"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = ">=3.12,<3.13"
 feedgen = "^1.0.0"
 gunicorn = "^23.0.0"
 Flask = "^3.1.0"
@@ -39,6 +39,8 @@ requests = "^2.32.3"
 pytest-docker = "^3.2.0"
 requests-mock = "^1.12.1"
 nox-poetry = "^1.1.0"
+types-requests = "^2.32.4.20250809"
+pip-audit = "^2.9.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
