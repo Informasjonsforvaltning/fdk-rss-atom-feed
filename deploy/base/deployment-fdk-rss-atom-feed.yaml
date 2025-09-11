@@ -21,6 +21,17 @@ spec:
     spec:
       containers:
         - name: fdk-rss-atom-feed
+          env:
+            - name: FDK_BASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: commonurl
+                  key: FDK_BASE_URI
+            - name: SEARCH_API
+              valueFrom:
+                secretKeyRef:
+                  name: commonurl
+                  key: FDK_SEARCH_SERVICE_BASE_URI
           image: fdk-rss-atom-feed
           imagePullPolicy: Always
           ports:
