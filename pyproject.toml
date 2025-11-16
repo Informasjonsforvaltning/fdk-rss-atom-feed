@@ -21,7 +21,7 @@ Flask = "^3.1.0"
 Flask-RESTful = "^0.3.10"
 
 [tool.poetry.group.dev.dependencies]
-black = "^25.1.0"
+black = "^25.11.0"
 codecov = "^2.1.13"
 coverage = "^7.6.12"
 flake8 = "^7.1.2"
