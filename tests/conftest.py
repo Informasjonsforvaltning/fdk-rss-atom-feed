@@ -1,4 +1,5 @@
 import os
+import shutil
 from typing import Any
 
 from fdk_rss_atom_feed.app import app as flask_app
@@ -10,6 +11,15 @@ SEARCH_SERVICE_BASE_URL = os.getenv(
     "SEARCH_SERVICE_URL",
     "https://search.api.staging.fellesdatakatalog.digdir.no",
 )
+
+
+@pytest.fixture(scope="session")
+def docker_compose_command() -> str:
+    # Use full path to docker so tests work with podman (docker→podman) or when PATH is minimal.
+    docker_path = shutil.which("docker")
+    if docker_path:
+        return f"{docker_path} compose"
+    return "docker-compose"
 
 
 @pytest.fixture(scope="session")
