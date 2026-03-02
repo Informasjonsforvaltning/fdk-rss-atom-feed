@@ -1,6 +1,5 @@
 import os
 
-
 FDK_BASE_URI = os.getenv("FDK_BASE_URI", "https://staging.fellesdatakatalog.digdir.no")
 BASE_URL = f"{FDK_BASE_URI}/datasets"
 

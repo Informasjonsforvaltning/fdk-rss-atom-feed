@@ -6,7 +6,6 @@ import pytest
 import requests
 from requests.exceptions import ConnectionError
 
-
 SEARCH_SERVICE_BASE_URL = os.getenv(
     "SEARCH_SERVICE_URL",
     "https://search.api.staging.fellesdatakatalog.digdir.no",
