@@ -12,7 +12,6 @@ from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedEntry, FeedGenerator
 import requests
 
-
 ALL_AVAILABLE_SEARCH_PARAMETERS = (
     "q",
     "losTheme",

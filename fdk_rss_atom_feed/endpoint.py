@@ -6,7 +6,6 @@ from fdk_rss_atom_feed.feed import FeedType, generate_feed, SEARCH_SERVICE_PARAM
 from fdk_rss_atom_feed.model import BadParamError
 from flask import abort, Request, Response
 
-
 FEED_TYPES = {
     "application/rss+xml": FeedType.RSS,
     "application/atom+xml": FeedType.ATOM,

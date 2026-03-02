@@ -1,7 +1,6 @@
 from fdk_rss_atom_feed.endpoint import feed
 from flask import Flask, request
 
-
 app = Flask(__name__)
 
 
