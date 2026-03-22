@@ -24,7 +24,7 @@ Flask-RESTful = "^0.3.10"
 [tool.poetry.group.dev.dependencies]
 black = "^26.1.0"
 codecov = "^2.1.13"
-coverage = "^7.13.4"
+coverage = "^7.13.5"
 flake8 = "^7.3.0"
 flake8-annotations = "^3.2.0"
 flake8-bandit = "^4.1.1"
