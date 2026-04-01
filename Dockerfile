@@ -3,11 +3,11 @@ FROM python:3.12-slim
 WORKDIR /app
 
 RUN python3 -m pip install --root-user-action=ignore --no-cache-dir -q \
-    poetry==1.8.5
+    poetry==2.3.3
 
 COPY poetry.lock pyproject.toml ./
 RUN python3 -m poetry config virtualenvs.create false \
-    && poetry install --only main --no-interaction --no-ansi
+    && poetry install --only main --no-root --no-interaction --no-ansi
 
 COPY fdk_rss_atom_feed fdk_rss_atom_feed
 COPY gunicorn_conf.py ./
