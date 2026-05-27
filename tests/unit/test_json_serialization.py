@@ -20,7 +20,8 @@ def test_json_serialization() -> None:
             provenance=SearchFilter[str](value="PROVENANCE"),
             formats=None,
             uri=None,
-            lastXDaysModified=SearchFilter[int](1),
+            lastXDays=SearchFilter[int](7),
+            lastXDaysModified=SearchFilter[int](30),
         ),
     )
 
@@ -37,7 +38,8 @@ def test_json_serialization() -> None:
                 "provenance": { "value": "PROVENANCE" },
                 "formats": null,
                 "uri": null,
-                "lastXDaysModified": { "value": 1 }
+                "lastXDays": { "value": 7 },
+                "lastXDaysModified": { "value": 30 }
             },
             "sort": null,
             "pagination": null

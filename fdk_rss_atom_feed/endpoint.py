@@ -2,7 +2,7 @@ import logging
 import traceback
 from typing import Any
 
-from fdk_rss_atom_feed.feed import FeedType, generate_feed, SEARCH_SERVICE_PARAMS
+from fdk_rss_atom_feed.feed import FeedType, generate_feed
 from fdk_rss_atom_feed.model import BadParamError
 from flask import abort, Request, Response
 
@@ -30,11 +30,7 @@ def feed(request: Request) -> Any:
     try:
         feed = generate_feed(feed_type, dict(request.args.items()))
     except BadParamError as e:
-        return abort(
-            400,
-            f"Invalid search param(s): {e}. "
-            f"Supported params: {', '.join(SEARCH_SERVICE_PARAMS)}",
-        )
+        return abort(400, str(e))
 
     except Exception:
         logging.error(

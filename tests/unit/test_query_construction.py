@@ -36,7 +36,8 @@ def test_construct_query() -> None:
             provenance=SearchFilter[str](value="PROVENANCE"),
             formats=None,
             uri=None,
-            lastXDaysModified=SearchFilter[int](1),
+            lastXDays=None,
+            lastXDaysModified=None,
         ),
         sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
         pagination=Pagination(page=0, size=MAX_SEARCH_HITS),
@@ -63,9 +64,26 @@ def test_construct_query_only_query_text() -> None:
             provenance=None,
             formats=None,
             uri=None,
-            lastXDaysModified=SearchFilter[int](1),
+            lastXDays=None,
+            lastXDaysModified=None,
         ),
         sort=Sort(field="FIRST_HARVESTED", direction="DESC"),
         pagination=Pagination(page=0, size=MAX_SEARCH_HITS),
     )
     assert construct_query(query.get("query", ""), query) == expected
+
+
+@pytest.mark.unit
+def test_construct_query_ignores_sort_params() -> None:
+    query = {"query": "test", "sortDirection": "ASC", "sortField": "MODIFIED"}
+    result = construct_query(search_string="test", params=query)
+    assert result.sort == Sort(field="FIRST_HARVESTED", direction="DESC")
+
+
+@pytest.mark.unit
+def test_construct_query_with_last_x_days() -> None:
+    query = {"query": "test", "lastXDays": "7", "lastXDaysModified": "30"}
+    result = construct_query(search_string="test", params=query)
+    assert result.filters is not None
+    assert result.filters.lastXDays == SearchFilter[int](value=7)
+    assert result.filters.lastXDaysModified == SearchFilter[int](value=30)
