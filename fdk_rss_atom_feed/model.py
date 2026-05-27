@@ -20,6 +20,7 @@ class Filters:
     provenance: SearchFilter[str] | None = None
     formats: SearchFilter[List[str]] | None = None
     uri: SearchFilter[List[str]] | None = None
+    lastXDays: SearchFilter[int] | None = None
     lastXDaysModified: SearchFilter[int] | None = None
 
 

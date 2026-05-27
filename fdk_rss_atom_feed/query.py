@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from fdk_rss_atom_feed.config import MAX_SEARCH_HITS
 from fdk_rss_atom_feed.model import (
+    BadParamError,
     Filters,
     Pagination,
     SearchFilter,
@@ -30,6 +31,15 @@ def parse_string(string: str | None) -> SearchFilter[str] | None:
     return SearchFilter[str](value=string)
 
 
+def parse_int(string: str | None) -> SearchFilter[int] | None:
+    if string is None:
+        return None
+    try:
+        return SearchFilter[int](value=int(string))
+    except ValueError as err:
+        raise BadParamError(f"expected integer, got: {string!r}") from err
+
+
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
     return SearchOperation(
         query=search_string,
@@ -50,5 +60,6 @@ def construct_filters(params: Dict[str, str]) -> Filters:
         provenance=parse_string(params.get("provenance", None)),
         formats=parse_filter_list(params.get("formats", None)),
         uri=None,
-        lastXDaysModified=SearchFilter[int](1),
+        lastXDays=parse_int(params.get("lastXDays", None)),
+        lastXDaysModified=parse_int(params.get("lastXDaysModified", None)),
     )

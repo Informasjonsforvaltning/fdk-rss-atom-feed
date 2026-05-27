@@ -6,54 +6,27 @@ from typing import Any, Dict, List
 from urllib.parse import urlencode
 
 from fdk_rss_atom_feed.config import BASE_URL, DATASETS_SEARCH_URL
-from fdk_rss_atom_feed.model import BadParamError, SearchOperation
+from fdk_rss_atom_feed.model import SearchOperation
 from fdk_rss_atom_feed.query import construct_query
 from fdk_rss_atom_feed.translation import translate_or_emptystr
 from feedgen.feed import FeedEntry, FeedGenerator
 import requests
 
-ALL_AVAILABLE_SEARCH_PARAMETERS = (
-    "q",
-    "losTheme",
-    "theme",
-    "opendata",
-    "accessrights",
-    "orgPath",
-    "spatial",
-    "provenance",
-    # Aligned with search-service:
-    "query",
-    "openData",
-    "dataTheme",
-    "accessRights",
-)
-
-
-SEARCH_SERVICE_PARAMS = (
-    "query",
-    "openData",
-    "losTheme",
-    "dataTheme",
-    "accessRights",
-    "orgPath",
-    "spatial",
-    "provenance",
-)
-
-
 param_map: Dict[str, str] = {
     "q": "query",
     "query": "query",
-    "losTheme": "losTheme",
+    "lostheme": "losTheme",
     "theme": "dataTheme",
-    "dataTheme": "dataTheme",
+    "datatheme": "dataTheme",
     "opendata": "openData",
-    "openData": "openData",
     "accessrights": "accessRights",
-    "accessRights": "accessRights",
-    "orgPath": "orgPath",
+    "orgpath": "orgPath",
     "spatial": "spatial",
     "provenance": "provenance",
+    "format": "formats",
+    "formats": "formats",
+    "lastxdays": "lastXDays",
+    "lastxdaysmodified": "lastXDaysModified",
 }
 
 
@@ -63,9 +36,7 @@ class FeedType(Enum):
 
 
 def generate_feed(feed_type: FeedType, args: Dict[str, str]) -> bytes:
-    if len((invalid_params := invalid_search_params(args))) > 0:
-        raise BadParamError(f"{', '.join(invalid_params)}")
-
+    args = {k.lower(): v for k, v in args.items()}
     params = get_search_params(args)
     url = f"{BASE_URL}{url_encode(params)}"
 
@@ -115,24 +86,8 @@ def query_datasets(q: str, params: Dict[str, str]) -> List[Dict]:
     return hits
 
 
-def invalid_search_params(args: Dict[str, str]) -> List[str]:
-    return [
-        param for param in args.keys() if param not in ALL_AVAILABLE_SEARCH_PARAMETERS
-    ]
-
-
 def get_search_params(args: Dict[str, str]) -> Dict[str, str]:
-    valid_input_params = {
-        param_map[field]: args[field]
-        for field in ALL_AVAILABLE_SEARCH_PARAMETERS
-        if field in args
-    }
-    search_service_params = {
-        key: value
-        for key, value in valid_input_params.items()
-        if key in SEARCH_SERVICE_PARAMS
-    }
-    return search_service_params
+    return {param_map[field]: args[field] for field in param_map if field in args}
 
 
 def url_encode(params: Dict[str, str]) -> str:
@@ -156,12 +111,6 @@ def search(search_operation: SearchOperation, url: str) -> Dict[str, Any]:
         raise
     except TimeoutError:
         logging.warning("Search request timed out")
-        raise
-
-    if response.status_code != 200:
-        logging.warning(
-            f"Search request failed with status code {response.status_code}"
-        )
         raise
 
     try:
