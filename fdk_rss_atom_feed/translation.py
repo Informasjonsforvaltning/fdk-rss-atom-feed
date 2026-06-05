@@ -7,7 +7,7 @@ def translate_or_emptystr(translatable: Optional[Dict[str, str]]) -> str:
     try:
         return translate(translatable)
     except ValueError:
-        logging.error(f"{traceback.format_exc()}Error translating: {str(translatable)}")
+        logging.debug(f"{traceback.format_exc()}Error translating: {str(translatable)}")
     return ""
 
 
