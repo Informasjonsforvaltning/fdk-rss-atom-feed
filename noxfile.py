@@ -8,13 +8,13 @@ from nox_poetry import Session, session
 locations = ["fdk_rss_atom_feed", "tests", "noxfile.py"]
 nox.options.envdir = ".cache"
 nox.options.reuse_existing_virtualenvs = True
-nox.options.sessions = (
+nox.options.sessions = [
     "lint",
     "mypy",
     "unit_tests",
     "integration_tests",
     "contract_tests",
-)
+]
 
 
 @session(python=["3.12"])
