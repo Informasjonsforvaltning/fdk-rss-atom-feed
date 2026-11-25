@@ -36,12 +36,21 @@ paths:
         - in: query
           name: accessRights
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+          description: Access rights codes, for example PUBLIC, RESTRICTED or NON_PUBLIC.
         - in: query
           name: orgPath
           schema:
-            type: string
-          description: Organization number (organisasjonsnummer). Consists of 9 digits.
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+          description: Organization paths, for example /STAT/972417807. A path also matches the organizations below it.
         - in: query
           name: spatial
           schema:
@@ -53,7 +62,12 @@ paths:
         - in: query
           name: provenance
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+          description: Provenance codes, for example NASJONAL or BRUKER.
 
       responses:
         "200":

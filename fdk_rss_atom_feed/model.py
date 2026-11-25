@@ -12,12 +12,12 @@ class SearchFilter(Generic[T]):
 @dataclass
 class Filters:
     openData: SearchFilter[bool] | None = None
-    orgPath: SearchFilter[str] | None = None
-    accessRights: SearchFilter[str] | None = None
+    orgPath: SearchFilter[List[str]] | None = None
+    accessRights: SearchFilter[List[str]] | None = None
     dataTheme: SearchFilter[List[str]] | None = None
     losTheme: SearchFilter[List[str]] | None = None
     spatial: SearchFilter[List[str]] | None = None
-    provenance: SearchFilter[str] | None = None
+    provenance: SearchFilter[List[str]] | None = None
     formats: SearchFilter[List[str]] | None = None
     uri: SearchFilter[List[str]] | None = None
     lastXDays: SearchFilter[int] | None = None

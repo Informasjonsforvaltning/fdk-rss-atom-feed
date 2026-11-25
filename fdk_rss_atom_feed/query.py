@@ -10,6 +10,8 @@ from fdk_rss_atom_feed.model import (
     Sort,
 )
 
+MAX_INT = 2**31 - 1
+
 
 def parse_filter_list(
     string: str | None,
@@ -25,19 +27,18 @@ def parse_boolean(string: str | None) -> SearchFilter[bool] | None:
     return SearchFilter[bool](value=(string.lower() == "true"))
 
 
-def parse_string(string: str | None) -> SearchFilter[str] | None:
-    if string is None:
-        return None
-    return SearchFilter[str](value=string)
-
-
 def parse_int(string: str | None) -> SearchFilter[int] | None:
     if string is None:
         return None
     try:
-        return SearchFilter[int](value=int(string))
+        value = int(string)
     except ValueError as err:
         raise BadParamError(f"expected integer, got: {string!r}") from err
+    # The search service deserializes this as a 32-bit Int and builds a
+    # "now-<n>d" date range from it, so only 0..2^31-1 is meaningful.
+    if not 0 <= value <= MAX_INT:
+        raise BadParamError(f"expected integer in 0..{MAX_INT}, got: {string!r}")
+    return SearchFilter[int](value=value)
 
 
 def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperation:
@@ -52,12 +53,12 @@ def construct_query(search_string: str, params: Dict[str, str]) -> SearchOperati
 def construct_filters(params: Dict[str, str]) -> Filters:
     return Filters(
         openData=parse_boolean(params.get("openData", None)),
-        orgPath=parse_string(params.get("orgPath", None)),
-        accessRights=parse_string(params.get("accessRights", None)),
+        orgPath=parse_filter_list(params.get("orgPath", None)),
+        accessRights=parse_filter_list(params.get("accessRights", None)),
         dataTheme=parse_filter_list(params.get("dataTheme", None)),
         losTheme=parse_filter_list(params.get("losTheme", None)),
         spatial=parse_filter_list(params.get("spatial", None)),
-        provenance=parse_string(params.get("provenance", None)),
+        provenance=parse_filter_list(params.get("provenance", None)),
         formats=parse_filter_list(params.get("formats", None)),
         uri=None,
         lastXDays=parse_int(params.get("lastXDays", None)),
